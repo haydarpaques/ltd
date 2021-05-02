@@ -1,2 +1,2 @@
 # ltd
-C++ limited.
+C++ Limited.
