@@ -7,3 +7,5 @@ configure_file(ltd_cfg.h.in ltd_cfg.h)
 
 # add the executable
 add_executable(ltd apps/ltd/main.cpp)
+
+target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_BINARY_DIR}")
