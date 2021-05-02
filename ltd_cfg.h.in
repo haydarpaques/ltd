@@ -1,0 +1,3 @@
+// the configured options and settings for LTD
+#define LTD_VERSION_MAJOR @ltd_VERSION_MAJOR@
+#define LTD_VERSION_MINOR @ltd_VERSION_MINOR@
