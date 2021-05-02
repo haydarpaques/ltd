@@ -1,2 +1,2 @@
-# ltd
-C++ limited.
+# {Ltd.}
+A suite of C++ library and build tools.
