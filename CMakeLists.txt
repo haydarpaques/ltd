@@ -20,6 +20,7 @@ add_executable(ltd-exe app/main.cpp)
 
 target_include_directories(ltd-exe PUBLIC "${PROJECT_BINARY_DIR}")
 target_include_directories(ltd-exe PUBLIC "${PROJECT_SOURCE_DIR}/inc/")
-target_link_libraries(ltd-exe ltd-lib)
+
+target_link_libraries(ltd-exe ltd-lib stdc++fs)
 
 set_target_properties(ltd-exe PROPERTIES OUTPUT_NAME ltd)
