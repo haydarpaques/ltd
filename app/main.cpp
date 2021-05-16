@@ -209,8 +209,6 @@ int main(int argc, char *argv[])
     } else if (command == "help") {
         print_help(flags);
     } else {
-        error exec_ret = error::no_error;
-
         fmt::println("Checking prerequisites...");
         
         // get LTD_HOME value
@@ -311,12 +309,16 @@ int main(int argc, char *argv[])
                 if ( fs::exists(home_path + "/" + project_name + "/CMakeLists.txt") )
                     fs::remove( home_path + "/" + project_name + "/CMakeLists.txt" );
 
-                // fmt::println("%s", cmake_txt);
+                fmt::println("-- Writing CMakeLists.txt to '%s'", home_path + project_name);
 
                 std::ofstream out(home_path + "/" + project_name + "/CMakeLists.txt");
                 out << cmake_txt << std::endl;
                 out.close();
             }
+
+            fs::current_path(home_path + "caches/" + project_name);
+            std::system(fmt::sprintf("cmake ../../%s .", project_name).c_str());
+            std::system("cmake --build .");
         } else {
             fmt::println("Command '%s' is not recognized...", command);
             print_help(flags);
