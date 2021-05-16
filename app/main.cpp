@@ -316,13 +316,36 @@ int main(int argc, char *argv[])
                 out.close();
             }
 
+            if (fs::exists(home_path + "caches/" + project_name) == false)
+                fs::create_directory(home_path + "caches/" + project_name);
+
             fs::current_path(home_path + "caches/" + project_name);
             std::system(fmt::sprintf("cmake ../../%s .", project_name).c_str());
             std::system("cmake --build .");
-        } else {
+        } // 'build' command
+        else if (command == "clean")
+        {
+            // Reading the project name and validating
+            if (flags.size() < 3) {
+                fmt::println("Expecting project name");
+                print_help(flags);
+                return -1;
+            }
+
+            auto [project_name, err0] = flags.at(2);
+            if (err0 != error::no_error) {
+                fmt::println("Error while retrieving project name. Exiting...");
+                return -1;
+            }
+
+            if (fs::exists(home_path + "caches/" + project_name))
+                fs::remove_all(home_path + "caches/" + project_name);            
+        } // 'clean' command
+        else 
+        {
             fmt::println("Command '%s' is not recognized...", command);
             print_help(flags);
-        }
+        } 
     }
  
     return 0;
