@@ -185,7 +185,7 @@ bool is_project_dirty(const std::string &home_path, const std::string &project_n
     return false;    
 }
 
-error clean(const args_opt& flags, const std::string &home_path) 
+error run(const args_opt& flags, const std::string &home_path) 
 {
     // Reading the project name and validating
     if (flags.size() < 3) {
@@ -194,20 +194,45 @@ error clean(const args_opt& flags, const std::string &home_path)
         return error::invalid_argument;
     }
 
-    auto [project_name, err0] = flags.at(2);
+    auto [target, err0] = flags.at(2);
     if (err0 != error::no_error) {
-        fmt::println("Error while retrieving project name. Exiting...");
+        fmt::println("Error while retrieving target name. Exiting...");
         return error::invalid_argument;
     }
 
     // Check apps name
-    if (project_name.find('/') != std::string::npos) {
-        if (fs::exists(home_path+project_name+"app") ) {
-             // Check multiple apps binaries
+    auto pos = target.find('/');
+    if ( pos != std::string::npos) {        
+        auto project_name = target.substr(0, pos);
+        auto app_name = target.substr(pos+1);
+
+        if (fs::exists(home_path + project_name + "/apps/" + app_name) ) {
+            auto cmd_target = home_path + "caches/" + project_name + "/" + app_name;
+            if (fs::exists(cmd_target)) {                
+                std::system(cmd_target.c_str());                
+                return error::no_error;
+            } else {
+                fmt::println("Target '%s' does not exist...", cmd_target);
+                return error::not_found;
+            }
+        } else {
+            fmt::println("%s", home_path + project_name + "apps/" + app_name);
+            fmt::println("Application '%s' for project '%s' does not exist", app_name, project_name);
+            return error::not_found;
         }
     } else {
-        if (fs::exists(home_path+project_name+"app") ) {
-             // Check single app binary
+        if (fs::exists(home_path + target + "/app") ) {
+            auto cmd_target = home_path + "caches" + target + "/" + target;
+            if (fs::exists(cmd_target)) {                
+                std::system(cmd_target.c_str());                
+                return error::no_error;
+            } else {
+                fmt::println("Target '%s' does not exist...", cmd_target);
+                return error::not_found;
+            }
+        } else {
+            fmt::println("Application '%s' does not exist", target);
+            return error::not_found;
         }
     }
 
@@ -392,6 +417,14 @@ int main(int argc, char *argv[])
                 return -1;
             }
         } // 'clean' command
+        else if (command == "run")
+        {
+            auto err = run(flags, home_path);
+
+            if (err != error::no_error) {
+                return -1;
+            }
+        }
         else 
         {
             fmt::println("Command '%s' is not recognized...", command);
