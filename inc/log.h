@@ -1,17 +1,18 @@
-#ifndef _LTD_INCLUDE_FMT_H_
-#define _LTD_INCLUDE_FMT_H_
+#ifndef _LTD_INCLUDE_LOG_H_
+#define _LTD_INCLUDE_LOG_H_
 
 #include <iostream>
 #include <iomanip>
 #include <string>
 #include <sstream>
 
-namespace ltd {
-
+namespace ltd
+{
     /**
-     * @brief Namespace fmt provides formatting functionalities similar to stdio functions in c.
+     * @brief Namespace log provides logging and formatting functionalities similar to stdio functions in c.
      */ 
-	namespace fmt {
+    namespace log
+    {
         enum class print_state {
             Next, Precision, Prepared
         };
@@ -95,7 +96,6 @@ namespace ltd {
 
                         if (formatter.expect_width) 
                         {
-                            // out.width(value);
                             if (formatter.expect_precision) 
                             {
                                 return osprintf(print_state::Precision, out, format, args...);
@@ -107,7 +107,6 @@ namespace ltd {
                         }
                         else if (formatter.expect_precision) 
                         {
-                            // out.precision(value);
                             return osprintf(print_state::Prepared, out, format, args...);
                         }
                         out << value;
@@ -164,7 +163,7 @@ namespace ltd {
             sstream << std::endl;
             return sstream.str();
         }
-	} // namespace fmt
+    } // namespace log
 } // namespace ltd
 
-#endif // _LTD_INCLUDE_FMT_H_
+#endif // _LTD_INCLUDE_LOG_H_

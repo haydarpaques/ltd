@@ -18,7 +18,7 @@ namespace ltd {}
 
 #include "args_opt.h"
 #include "errors.h"
-#include "fmt.h"
+#include "log.h"
 #include "stdalias.h"
 
 #endif // _LTD_INCLUDE_LTD_H_
