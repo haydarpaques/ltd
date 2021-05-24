@@ -1,5 +1,5 @@
-#ifndef _LTD_INCLUDE_ARGS_OPT_H_
-#define _LTD_INCLUDE_ARGS_OPT_H_
+#ifndef _LTD_INCLUDE_CLI_ARGS_H_
+#define _LTD_INCLUDE_CLI_ARGS_H_
 
 #include <vector>
 #include <string>
@@ -10,7 +10,9 @@
 namespace ltd
 {
     /**
-     * Class args_opt implements command line arguments helper tools.
+     * @brief Provides helper functions for handling with command-line arguments.
+     *
+     * Class cli_args implements command line arguments helper tools.
      * 
      * This class provides command line arguments parser and simple help system. 
      * To use this class, initialize it with `argc` and `argv` taken from `main()`.
@@ -21,7 +23,7 @@ namespace ltd
      * ```C++
      *          int main(int argc, char *argv[])
      *          {
-     *              auto arguments = ltd::args_opt(argc, argv);
+     *              auto arguments = ltd::cli_args(argc, argv);
      *              int debug     = 0;
      *              int verbosity = 0;
      *  
@@ -39,21 +41,21 @@ namespace ltd
      *          }
      * ```
      */ 
-    class args_opt
+    class cli_args
     {
         int    arg_count    = 0;
-            char **arg_values   = nullptr;
+        char **arg_values   = nullptr;
 
-            using opt_list = std::vector<ret<char,std::string,std::string>>;  
-            opt_list entries;
+        using opt_list = std::vector<ret<char,std::string,std::string>>;  
+        opt_list entries;
 
-            error parsing_err;
+        error parsing_err;
 
-            ret<char*,int,error> parse(char short_opt, const char *long_opt) const;
+        ret<std::vector<std::string>,int,error> parse(char short_opt, const char *long_opt) const;
 
         public:
             
-            args_opt();
+            cli_args();
 
             void init(int argc, char *argv[]);
 
@@ -61,7 +63,7 @@ namespace ltd
              * @brief
              * Construct the arguments object by providing `argc` and `argv` from `main()`.
              */ 
-            args_opt(int argc, char *argv[]);
+            cli_args(int argc, char *argv[]);
 
             /**
              * @brief Returns the number of argument(s) available.
@@ -102,8 +104,7 @@ namespace ltd
              * @brief Check for parsing errors.
              */
             error last_error() const;
-    }; // class args_opt
-
+    }; // class cli_args
 } // namespace ltd
 
-#endif // _LTD_INCLUDE_ARGS_OPT_H_
+#endif // _LTD_INCLUDE_CLI_ARGS_H_

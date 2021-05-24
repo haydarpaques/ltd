@@ -129,7 +129,7 @@ bool is_project_dirty(const std::string &home_path, const std::string &project_n
     return false;    
 }
 
-error run(const args_opt& flags, const std::string &home_path) 
+error run(const cli_args& flags, const std::string &home_path) 
 {
     // Reading the project name and validating
     if (flags.size() < 3) {
@@ -184,7 +184,7 @@ error run(const args_opt& flags, const std::string &home_path)
     return error::no_error;
 }
 
-error clean(const args_opt& flags, const std::string &home_path) 
+error clean(const cli_args& flags, const std::string &home_path) 
 {
     // Reading the project name and validating
     if (flags.size() < 3) {
@@ -206,7 +206,7 @@ error clean(const args_opt& flags, const std::string &home_path)
     return error::no_error;          
 }
 
-error build(const args_opt& flags, const std::string &home_path)
+error build(const cli_args& flags, const std::string &home_path)
 {
     std::vector<std::string> project_libs;
 
@@ -299,7 +299,7 @@ auto main(int argc, char *argv[]) -> int {
     std::string opt_imports;
 
     int opt_verbose;
-    args_opt flags;
+    cli_args flags;
 
     flags.init(argc, argv);
 

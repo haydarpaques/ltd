@@ -11,12 +11,11 @@
  * To use `ltd` namespace, use the namespace by calling keyword `using`.
  * ```C++
  *      using namespace ltd;
- *      using namespace ltd::memory;
  * ``` 
  */ 
 namespace ltd {}
 
-#include "args_opt.h"
+#include "cli_args.h"
 #include "errors.h"
 #include "log.h"
 #include "stdalias.h"
