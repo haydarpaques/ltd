@@ -129,7 +129,7 @@ bool is_project_dirty(const std::string &home_path, const std::string &project_n
     return false;    
 }
 
-error run(const cli_args& flags, const std::string &home_path) 
+error run(const cli_arguments& flags, const std::string &home_path) 
 {
     // Reading the project name and validating
     if (flags.size() < 3) {
@@ -139,11 +139,13 @@ error run(const cli_args& flags, const std::string &home_path)
         return error::invalid_argument;
     }
 
-    auto [target, err0] = flags.at(2);
+    auto [raw_arg, err0] = flags.at(2);
     if (err0 != error::no_error) {
         log::println("Error while retrieving target name. Exiting...");
         return error::invalid_argument;
     }
+
+    std::string target = raw_arg;
 
     // Check apps name
     auto pos = target.find('/');
@@ -184,7 +186,7 @@ error run(const cli_args& flags, const std::string &home_path)
     return error::no_error;
 }
 
-error clean(const cli_args& flags, const std::string &home_path) 
+error clean(const cli_arguments& flags, const std::string &home_path) 
 {
     // Reading the project name and validating
     if (flags.size() < 3) {
@@ -206,7 +208,7 @@ error clean(const cli_args& flags, const std::string &home_path)
     return error::no_error;          
 }
 
-error build(const cli_args& flags, const std::string &home_path)
+error build(const cli_arguments& flags, const std::string &home_path)
 {
     std::vector<std::string> project_libs;
 
@@ -299,14 +301,13 @@ auto main(int argc, char *argv[]) -> int {
     std::string opt_imports;
 
     int opt_verbose;
-    cli_args flags;
-
-    flags.init(argc, argv);
+    cli_arguments flags;    
 
     // Bind arguments
-    flags.bind(opt_libs, std::string(""), 'l', "libraries", "input system libraries.");
-    flags.bind(opt_libs, std::string(""), 'i', "imports ", "import ltd projects.");
-    flags.bind(opt_verbose, 0, 'v', "verbose", "logging verbosity.");
+    flags.bind(&opt_libs, 'l', "libraries", "input system libraries.");
+    flags.bind(&opt_libs, 'i', "imports ", "import ltd projects.");
+    flags.bind(&opt_verbose, 'v', "verbose", "logging verbosity.");
+    flags.parse(argc, argv);
 
     if (flags.size() < 2) {
         print_help();
