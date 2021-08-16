@@ -1,18 +1,20 @@
 #ifndef _LTD_INCLUDE_CLI_ARGS_H_
 #define _LTD_INCLUDE_CLI_ARGS_H_
 
+#include <variant>
 #include <vector>
 #include <string>
+#include <map>
 
 #include "errors.h"
 #include "stdalias.h"
 
 namespace ltd
 {
-    /**
+     /**
      * @brief Provides helper functions for handling with command-line arguments.
      *
-     * Class cli_args implements command line arguments helper tools.
+     * Class cli_arguments implements command line arguments helper tools.
      * 
      * This class provides command line arguments parser and simple help system. 
      * To use this class, initialize it with `argc` and `argv` taken from `main()`.
@@ -23,14 +25,15 @@ namespace ltd
      * ```C++
      *          int main(int argc, char *argv[])
      *          {
-     *              auto arguments = ltd::cli_args(argc, argv);
+     *              cli_arguments args;
      *              int debug     = 0;
      *              int verbosity = 0;
      *  
-     *              arguments.bind(debug, 0, 'g', "debug", "Build with debug information.");
-     *              arguments.bind(verbosity, 0, 'v', "verbose", "Verbose logging.");
+     *              args.bind(&debug, 'g', "debug", "Build with debug information.");
+     *              args.bind(&verbosity, 'v', "verbose", "Verbose logging.");
+     *              args.parse(argc, argv);
      *           
-     *              if (arguments.last_error() != error::no_error || arguments.size() < 2)
+     *              if (arguments.size() < 2)
      *              {
      *                  print_help();
      *                  arguments.print_help(4);
@@ -41,70 +44,146 @@ namespace ltd
      *          }
      * ```
      */ 
-    class cli_args
+    class cli_arguments
     {
-        int    arg_count    = 0;
-        char **arg_values   = nullptr;
+    private:                
 
-        using opt_list = std::vector<ret<char,std::string,std::string>>;  
-        opt_list entries;
+        struct option
+        {   
+            using value_t = std::variant<int*, std::string*, std::vector<const char*>*>;
 
-        error parsing_err;
+            std::string long_opt;
+            std::string help;
+            char        short_opt;
+            value_t     value;            
+        };
 
-        ret<std::vector<std::string>,int,error> parse(char short_opt, const char *long_opt) const;
+        struct argument
+        {
+            std::vector<const char*> values;
+            size_t occurence;
+            char   short_opt;
+        };
 
-        public:
-            
-            cli_args();
+    private:
+        int    argc;
+        char** argv;
 
-            void init(int argc, char *argv[]);
+        std::vector<option>   options;
+        std::vector<argument> arguments;
 
-            /**
-             * @brief
-             * Construct the arguments object by providing `argc` and `argv` from `main()`.
-             */ 
-            cli_args(int argc, char *argv[]);
+    private:
+        ret<int, error> get_argument(char short_opt);
+        ret<int, error> add_argument(char short_opt);
+        
+        error parse_argv();
+        error bind_values();
 
-            /**
-             * @brief Returns the number of argument(s) available.
-             */ 
-            size_t size() const;
+    public:
+        /**
+         * @brief Construct a new cli args object
+         */
+        cli_arguments();
 
-            /**
-             * @brief Returns the argument at the given index.
-             */
-            ret<std::string,error> at(int index) const;
-            
-            /**
-             * @brief
-             * Binds an integer to an option.
-             * 
-             * Call this function to bind a variable to a certain option. If the option is provided
-             * when the program is launched, the variable will be assigned with that value.
-             * If the option is not provided, then a default value will be assigned to the variable.
-             */ 
-            void bind(int& arg, int default_value, char short_opt, const char *long_opt, const char *help);
+        /**
+         * @brief
+         * Binds a string to an option.
+         * 
+         * Call this function to bind a string variable to an argument. If 
+         * the argument is provided in the cli command the variable will be 
+         * assigned with that value. If the option is not provided, then a 
+         * default value will be assigned to the variable.
+         */ 
+        error bind(int* value, char short_opt, const std::string& long_opt, const std::string& help);
 
-            /**
-             * @brief
-             * Binds a string to an option.
-             * 
-             * Call this function to bind a variable to a certain option. If the option is provided
-             * when the program is launched, the variable will be assigned with that value.
-             * If the option is not provided, then a default value will be assigned to the variable.
-             */ 
-            void bind(std::string& arg, std::string default_value, char short_opt, const char *long_opt, const char *help); 
+        /**
+         * @brief
+         * Binds a string to an option.
+         * 
+         * Call this function to bind a string variable to an argument. If 
+         * the argument is provided in the cli command the variable will be 
+         * assigned with that value. If the option is not provided, then a 
+         * default value will be assigned to the variable.
+         */ 
+        error bind(std::string* value, char short_opt, const std::string& long_opt, const std::string& help);
 
-            /**
-             * @brief Print list of options available to the terminal indented.
-             */        
-            void print_help(int indent) const;  
+        /**
+         * @brief
+         * Binds a string to an option.
+         * 
+         * Call this function to bind a string variable to an argument. If 
+         * the argument is provided in the cli command the variable will be 
+         * assigned with that value. If the option is not provided, then a 
+         * default value will be assigned to the variable.
+         */ 
+        error bind(std::vector<const char*>* value, char short_opt, const std::string& long_opt, const std::string& help);
 
-            /**
-             * @brief Check for parsing errors.
-             */
-            error last_error() const;
-    }; // class cli_args
+        /**
+         * @brief 
+         * 
+         * @param func 
+         */
+        void  iterate_options(void (func)(std::variant<int*, std::string*, std::vector<const char*>*>, char, const std::string&, const std::string&));
+
+        /**
+         * @brief Get the short opt object
+         * 
+         * @param long_opt 
+         * @return ret<char, error> 
+         */
+        ret<char, error> get_short_opt(const std::string& long_opt) const;
+
+        /**
+         * @brief Get the long opt object
+         * 
+         * @param short_opt 
+         * @return ret<const std::string&, error> 
+         */
+        ret<const std::string&, error> get_long_opt(char short_opt) const;
+
+        /**
+         * @brief Get the index object
+         * 
+         * @param short_opt 
+         * @return ret<int, error> 
+         */
+        ret<int, error> get_index(char short_opt) const;
+
+        /**
+         * @brief 
+         * 
+         * @param index 
+         * @return ret<const char*, error> 
+         */
+        ret<const char*, error> at(size_t index) const;
+
+        /**
+         * @brief 
+         * 
+         * @param argc 
+         * @param argv 
+         * @return error 
+         */
+        error parse(int argc, char** argv);
+
+        /**
+         * @brief Get the `argc` value.
+         * 
+         * @return size_t The value of argc.
+         */
+        size_t size() const;
+
+        /**
+         * @brief Prints options switches to terminal.
+         * 
+         * Prints all short and long options into the terminal. This can be used
+         * with help display.
+         * 
+         * @param indent Size of the indentation.
+         */
+        void print_help(size_t indent) const;
+
+    }; // class cli_arguments
 } // namespace ltd
 
 #endif // _LTD_INCLUDE_CLI_ARGS_H_

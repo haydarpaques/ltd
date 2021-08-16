@@ -127,7 +127,7 @@ namespace ltd
         /**
          * Return this value when there is an error where the given address is not a valid address.
          * 
-         * @bried Error caused by addressing issues.
+         * @brief Error caused by addressing issues.
          */
         static const error invalid_address;
 
@@ -135,6 +135,15 @@ namespace ltd
          * Return this value when an operation has failed.
          */  
         static const error invalid_operation;
+
+        /**
+         * Return this value when the operation causes duplication issues or
+         * the process cannot be completed because it is resulting in a duplication
+         * of data in the system.
+         * 
+         * @brief Error caused by duplication occured in the process.
+         */
+        static const error duplication;
     };
 
     inline bool operator==(const error& lhs, const error& rhs){ return lhs.code == rhs.code; }

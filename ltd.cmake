@@ -23,38 +23,36 @@ target_link_libraries(ltd-exe ltd-lib stdc++fs)
 set_target_properties(ltd-exe PROPERTIES OUTPUT_NAME ltd)
 
 # add test executables
-add_executable(cli_args-test tests/cliargs.cpp)
+add_executable(cliargs-test tests/cliargs.cpp)
 
-target_include_directories(cli_args-test PUBLIC "${PROJECT_BINARY_DIR}")
-target_include_directories(cli_args-test PUBLIC "${PROJECT_SOURCE_DIR}/inc/")
+target_include_directories(cliargs-test PUBLIC "${PROJECT_BINARY_DIR}")
+target_include_directories(cliargs-test PUBLIC "${PROJECT_SOURCE_DIR}/inc/")
 
-target_link_libraries(cli_args-test ltd-lib)
+target_link_libraries(cliargs-test ltd-lib)
 
-set_target_properties(cli_args-test PROPERTIES OUTPUT_NAME cli_args)
+set_target_properties(cliargs-test PROPERTIES OUTPUT_NAME test_cliargs)
 
 # Test section
 enable_testing()
 
-# cli_args test unit
-add_test(NAME cli_args-Runs COMMAND cli_args-test -c 0)
+# cliargs test unit
+add_test(NAME        cliargs-TC01 COMMAND cliargs-test -c 0)
 
-add_test(NAME cli_args-Usage COMMAND cli_args-test)
-set_tests_properties(cli_args-Usage
-  PROPERTIES PASS_REGULAR_EXPRESSION "Usage:.*"
-  )
+add_test(NAME        cliargs-TC02 COMMAND cliargs-test)
+set_tests_properties(cliargs-TC02 PROPERTIES PASS_REGULAR_EXPRESSION "Usage:.*")
 
-add_test(NAME        cli_args-00 COMMAND cli_args-test -c 0)
-set_tests_properties(cli_args-00 PROPERTIES PASS_REGULAR_EXPRESSION "Case: 0" )
+add_test(NAME        cliargs-TC03 COMMAND cliargs-test -c 0)
+set_tests_properties(cliargs-TC03 PROPERTIES PASS_REGULAR_EXPRESSION "Case: 0" )
 
-add_test(NAME        cli_args-01 COMMAND cli_args-test --testcase 1)
-set_tests_properties(cli_args-01 PROPERTIES PASS_REGULAR_EXPRESSION "Case: 1" )
+add_test(NAME        cliargs-TC04 COMMAND cliargs-test --testcase 1)
+set_tests_properties(cliargs-TC04 PROPERTIES PASS_REGULAR_EXPRESSION "Case: 1" )
 
-add_test(NAME        cli_args-02 COMMAND cli_args-test -c 2)
-set_tests_properties(cli_args-02 PROPERTIES PASS_REGULAR_EXPRESSION "Name: cli_args" )
+add_test(NAME        cliargs-TC05 COMMAND cliargs-test -c 2)
+set_tests_properties(cliargs-TC05 PROPERTIES PASS_REGULAR_EXPRESSION "Name: cliargs" )
 
-add_test(NAME        cli_args-03 COMMAND cli_args-test -c 3 -v -v)
-set_tests_properties(cli_args-03 PROPERTIES PASS_REGULAR_EXPRESSION "Verbosity: 2" )
+add_test(NAME        cliargs-TC06 COMMAND cliargs-test -c 3 -v -v)
+set_tests_properties(cliargs-TC06 PROPERTIES PASS_REGULAR_EXPRESSION "Verbosity: 2" )
 
-add_test(NAME        cli_args-04 COMMAND cli_args-test -c 4 -vvv)
-set_tests_properties(cli_args-04 PROPERTIES PASS_REGULAR_EXPRESSION "Verbosity: 3" )
+add_test(NAME        cliargs-TC07 COMMAND cliargs-test -c 4 -vvv)
+set_tests_properties(cliargs-TC07 PROPERTIES PASS_REGULAR_EXPRESSION "Verbosity: 3" )
 

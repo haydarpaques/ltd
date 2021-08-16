@@ -19,5 +19,6 @@ namespace ltd {}
 #include "errors.h"
 #include "log.h"
 #include "stdalias.h"
+#include "tests.h"
 
 #endif // _LTD_INCLUDE_LTD_H_

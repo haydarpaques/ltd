@@ -1,17 +1,18 @@
 #include <ltd.h>
-
+ 
 using namespace ltd;
 
 auto main(int argc, char **argv) -> int
 {
-    cli_args flags;
-    flags.init(argc, argv);
+    cli_arguments flags;
 
     int test_case = 0;
     int verbosity = 0;
 
-    flags.bind(test_case, -1, 'c', "testcase", "Specify test case number.");
-    flags.bind(verbosity, -1, 'v', "verbose", "Specify verbosity level.");
+    log::println("Case: 1111");
+    flags.bind(&test_case, 'c', "testcase", "Specify test case number.");
+    flags.bind(&verbosity, 'v', "verbose", "Specify verbosity level.");
+    flags.parse(argc, argv);
 
     if (argc == 1) {
         log::println("Usage: cli_args [options...]");
@@ -27,7 +28,7 @@ auto main(int argc, char **argv) -> int
             log::println("Case: 1");
             break;
         case 2:
-            log::println("Name: cli_args");
+            log::println("Name: cliargs");
             break;
         case 3:
             log::println("Verbosity: %d", verbosity);
@@ -35,6 +36,7 @@ auto main(int argc, char **argv) -> int
         case 4:
             log::println("Verbosity: %d", verbosity);
             break;
+        // TODO: test string arguments with double quotes ""
         default:
             log::println("Invalid test case");            
     }
