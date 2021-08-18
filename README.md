@@ -7,3 +7,19 @@ C++ code. It does so by providing:
   toolchains 
 - a library with a framework that encourages consistent and good practices in 
   writing safe and performant code.
+  
+## Building
+
+```
+> mkdir ltd_home
+> cd ltd_home
+> git clone https://github.com/benniadham/ltd.git
+> git clone https://github.com/benniadham/ltd_sandbox.git
+> mkdir caches
+> cd caches
+> mkdir ltd
+> cd ltd
+> cmake ../../ltd/ .
+> cmake --build .
+> ./ltd build ltd_sanbox
+```
