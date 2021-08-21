@@ -88,6 +88,76 @@ error config_app(const std::string &home_path, const std::string &project_name, 
     return error::no_error;
 }
 
+error config_test(const std::string &home_path, const std::string &project_name, const std::vector<std::string> &project_libs, std::string &cmake_text)
+{
+    cmake_text += log::sprintln("\n# configure test executable target");
+
+    // Collect source files
+    std::string src_path = home_path + project_name + "/tests";
+    std::vector<std::string> files;
+    for (const auto& dir_entry : fs::directory_iterator(src_path))
+    {
+        if (fs::is_directory(dir_entry) == true)
+                continue;
+
+        if (dir_entry.path().extension() != ".cpp" &&
+            dir_entry.path().extension() != ".cxx" &&
+            dir_entry.path().extension() != ".cc") {
+                continue;
+        }
+
+        auto bin_name = dir_entry.path().filename().replace_extension("").string();
+
+        cmake_text += log::sprintln("add_executable( %s-test tests/%s)", bin_name, dir_entry.path().filename().string());
+        cmake_text += log::sprintln("target_include_directories( %s-test PUBLIC \"${PROJECT_BINARY_DIR}\")", bin_name);
+        cmake_text += log::sprintln("target_include_directories( %s-test PUBLIC \"${PROJECT_SOURCE_DIR}/inc/\")", bin_name);
+        cmake_text += log::sprintln("target_include_directories( %s-test PUBLIC \"%s/ltd/inc/\")", bin_name, home_path);
+        cmake_text += log::sprintln("set_target_properties( %s-test PROPERTIES OUTPUT_NAME %s )", bin_name, bin_name);
+
+        std::string local_libs;
+        for (auto lib_target : project_libs) {
+            local_libs += lib_target + "-lib ";
+        }
+
+        cmake_text += log::sprintln("target_link_libraries( %s-test %s stdc++fs ltd)", bin_name, local_libs );
+        cmake_text += log::sprintln("target_link_directories( %s-test PUBLIC \"%s/caches/ltd/\")", bin_name, home_path );
+        cmake_text += "\n";
+        
+        files.push_back(bin_name);
+    }
+
+    if (files.size() == 0)
+        return error::not_found;
+
+
+    cmake_text += log::sprintln("# Test section");
+    cmake_text += log::sprintln("enable_testing()");
+    cmake_text += log::sprintln("");
+    cmake_text += log::sprintln("# define a function to simplify adding tests");
+    cmake_text += log::sprintln("function(do_test target arg result)");
+    cmake_text += log::sprintln("add_test(NAME Comp${arg} COMMAND ${target} ${arg})");
+    cmake_text += log::sprintln("set_tests_properties(Comp${arg}");
+    cmake_text += log::sprintln("    PROPERTIES PASS_REGULAR_EXPRESSION ${result}");
+    cmake_text += log::sprintln("    )");
+    cmake_text += log::sprintln("endfunction(do_test)");
+    cmake_text += log::sprintln("");
+    cmake_text += log::sprintln("function(config_test_bin testbin)");
+    cmake_text += log::sprintln("    execute_process(COMMAND \"./${testbin}\"");
+    cmake_text += log::sprintln("        OUTPUT_VARIABLE out1)");
+    cmake_text += log::sprintln("    math(EXPR LOOP_STOP \"${out1} - 1\")");
+    cmake_text += log::sprintln("");
+    cmake_text += log::sprintln("    foreach(X RANGE 0 ${LOOP_STOP})");
+    cmake_text += log::sprintln("        do_test(${testbin} ${X} \"-ok-\")");
+    cmake_text += log::sprintln("    endforeach()");
+    cmake_text += log::sprintln("endfunction(config_test_bin)");
+
+    for(auto test_bin : files) {
+        cmake_text += log::sprintln("config_test_bin(%s)", test_bin);
+    }
+    
+    return error::no_error;
+}
+
 bool is_project_dirty(const std::string &home_path, const std::string &project_name)
 {
     // We need to generate one when the following conditions met:
@@ -208,6 +278,48 @@ error clean(const cli_arguments& flags, const std::string &home_path)
     return error::no_error;          
 }
 
+error test(const cli_arguments& flags, const std::string &home_path) 
+{
+    // Reading the project name and validating
+    if (flags.size() < 3) {
+        log::println("Expecting project name");
+        print_help();
+        flags.print_help(4);
+        return error::invalid_argument;
+    }
+
+    auto [project_name, err0] = flags.at(2);
+    if (err0 != error::no_error) {
+        log::println("Error while retrieving project name. Exiting...");
+        return error::invalid_argument;
+    }
+
+    if (fs::exists(home_path + "caches/" + project_name)) {
+        fs::current_path(home_path + "caches/" + project_name);
+        std::system("ctest -VV"); // TODO: control the verbosity level
+    } else {
+        log::println("Cannot find files for '%s'", project_name);
+        return error::invalid_argument;
+    }
+
+    return error::no_error;          
+}
+
+/**
+ * @brief Builds a project
+ * 
+ * Build binaries in a project. The binary can be an executable or a static library.
+ * 
+ * When the project folder has 'libs' folder, multiple libraries build mode is enabled.
+ * The toolds will iterate folders under the 'libs' folder and create libfolder_name.a as an output.
+ * 
+ * In the project has lib folder, it will engage the single library mode. Meaning,
+ * the system will compile all files under 'lib' folder and creates libproject_name.a as an output.
+ * 
+ * @param flags 
+ * @param home_path 
+ * @return error 
+ */
 error build(const cli_arguments& flags, const std::string &home_path)
 {
     std::vector<std::string> project_libs;
@@ -274,6 +386,10 @@ error build(const cli_arguments& flags, const std::string &home_path)
             }
         }
 
+        // Test section
+        // Builds test cases
+        config_test(home_path, project_name, project_libs, cmake_txt);
+
         if ( fs::exists(home_path + "/" + project_name + "/CMakeLists.txt") )
             fs::remove( home_path + "/" + project_name + "/CMakeLists.txt" );
 
@@ -290,6 +406,8 @@ error build(const cli_arguments& flags, const std::string &home_path)
     fs::current_path(home_path + "caches/" + project_name);
     std::system(log::sprintf("cmake ../../%s .", project_name).c_str());
     std::system("cmake --build .");
+    log::println("-- Running second pass for test generation");
+    std::system(log::sprintf("cmake ../../%s .", project_name).c_str());
 
     return error::no_error;
 }
@@ -375,6 +493,14 @@ auto main(int argc, char *argv[]) -> int {
         else if (command == "run")
         {
             auto err = run(flags, home_path);
+
+            if (err != error::no_error) {
+                return -1;
+            }
+        }
+        else if (command == "test")
+        {
+            auto err = test(flags, home_path);
 
             if (err != error::no_error) {
                 return -1;

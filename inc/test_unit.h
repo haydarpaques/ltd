@@ -9,14 +9,20 @@ namespace ltd
     class test_unit
     {
     private:
-        std::vector<std::function<void(const test_unit&)>> test_cases;
+
+        std::vector<std::function<void()>> test_cases;
+
+        bool failed;
 
     public:
         test_unit();
+        ~test_unit();
 
-        void test(const std::string& args, std::function<void()> test_function);
+        void test(std::function<void()> test_function);
 
-        void run(int tcid);
+        void expect(bool condition, const std::string& message);
+
+        void run(int argc, char** argv);
 
     }; // class test_unit
 } // namespace ltd

@@ -1,44 +1,77 @@
+#include <string.h>
+
 #include <ltd.h>
- 
+
 using namespace ltd;
 
-auto main(int argc, char **argv) -> int
+class args_factory
 {
-    cli_arguments flags;
-
-    int test_case = 0;
-    int verbosity = 0;
-
-    log::println("Case: 1111");
-    flags.bind(&test_case, 'c', "testcase", "Specify test case number.");
-    flags.bind(&verbosity, 'v', "verbose", "Specify verbosity level.");
-    flags.parse(argc, argv);
-
-    if (argc == 1) {
-        log::println("Usage: cli_args [options...]");
-        flags.print_help(4);
-        return 0;
+    int    arg_count;
+    char** arg_list;
+public:
+    args_factory(int argc, const char** argv)
+    {
+        arg_count = argc;
+        arg_list = new char*[arg_count];
+        for (int i=0; i<argc; i++) {
+            arg_list[i] = strdup(argv[i]);
+        }
     }
 
-    switch (test_case) {
-        case 0:
-            log::println("Case: 0");
-            break;
-        case 1:
-            log::println("Case: 1");
-            break;
-        case 2:
-            log::println("Name: cliargs");
-            break;
-        case 3:
-            log::println("Verbosity: %d", verbosity);
-            break;
-        case 4:
-            log::println("Verbosity: %d", verbosity);
-            break;
-        // TODO: test string arguments with double quotes ""
-        default:
-            log::println("Invalid test case");            
+    virtual ~args_factory() 
+    {
+        for (int i=0; i<arg_count; i++) {
+            free(arg_list[i]);
+        }
+
+        delete [] arg_list;
     }
+
+    int count() const { return arg_count; }
+    char ** arguments() { return arg_list; }
+
+};
+
+auto main(int argc, char** argv) -> int
+{
+    test_unit tu;
+
+    tu.test([&tu] () -> void {
+        const char* cli[2] = {"cliargs","-vv"};
+        args_factory args(2, cli);
+
+        int    my_argc = args.count(); 
+        char **my_argv = args.arguments();
+
+        cli_arguments flags;
+
+        int verbosity = 0;
+
+        flags.bind(&verbosity, 'v', "verbose", "Specify verbosity level.");
+
+        flags.parse(my_argc, my_argv);    
+        
+        tu.expect(verbosity == 2, "Expect verbosity = 2");
+    });
+
+    tu.test([&tu] () -> void {
+        const char* cli[3] = {"cliargs","-v", "4"};
+        args_factory args(3, cli);
+
+        int    my_argc = args.count(); 
+        char **my_argv = args.arguments();
+
+        cli_arguments flags;
+
+        int verbosity = 0;
+
+        flags.bind(&verbosity, 'v', "verbose", "Specify verbosity level.");
+
+        flags.parse(my_argc, my_argv);    
+        
+        tu.expect(verbosity == 4, "Expect verbosity = 4");
+    });
+
+    tu.run(argc, argv);
     return 0;
 }

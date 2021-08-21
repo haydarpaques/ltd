@@ -139,7 +139,6 @@ namespace ltd
             int index = -1;
             if (argv[i][0] == '-') 
             {
-                log::println("Option: %s", argv[i]);
                 if (argv[i][1] == '-') 
                 {
                     auto [short_opt, err] = get_short_opt(&argv[i][2]);
@@ -172,7 +171,6 @@ namespace ltd
 
                 // at this point our index should point to an option that might expect one or more value
                 while (i+1 < argc && argv[i+1][0] != '-') {
-                    log::println("Value %d %d: %s", argc, i+1, argv[i+1]);
                     arguments[index].values.push_back(argv[++i]);
                 }
             }
@@ -197,6 +195,7 @@ namespace ltd
                 else {
                     std::string value = arg.values[0];
                     bool isnumber = std::all_of(value.begin(), value.end(), ::isdigit);
+                    // TODO: Why isnumber is not tested?
                     *val_ptr = std::stol(value);                    
                 }
             }
@@ -227,7 +226,6 @@ namespace ltd
         this->argc = argc;
         this->argv = argv;
 
-        log::println("Parse");
         parse_argv();
         bind_values();
 

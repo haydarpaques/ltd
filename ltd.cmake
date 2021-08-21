@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 configure_file(ltd_cfg.h.in ltd_cfg.h)
 
 # add the library
-add_library( ltd-lib lib/cli_args.cpp lib/errors.cpp lib/log.cpp )
+add_library( ltd-lib lib/cli_args.cpp lib/errors.cpp lib/log.cpp lib/test_unit.cpp )
 target_include_directories(ltd-lib PUBLIC "${PROJECT_BINARY_DIR}")
 target_include_directories(ltd-lib PUBLIC "${PROJECT_SOURCE_DIR}/inc/")
 set_target_properties(ltd-lib PROPERTIES OUTPUT_NAME ltd)
@@ -35,24 +35,23 @@ set_target_properties(cliargs-test PROPERTIES OUTPUT_NAME test_cliargs)
 # Test section
 enable_testing()
 
-# cliargs test unit
-add_test(NAME        cliargs-TC01 COMMAND cliargs-test -c 0)
+# define a function to simplify adding tests
+function(do_test target arg result)
+  add_test(NAME Comp${arg} COMMAND ${target} ${arg})
+  set_tests_properties(Comp${arg}
+    PROPERTIES PASS_REGULAR_EXPRESSION ${result}
+    )
+endfunction(do_test)
 
-add_test(NAME        cliargs-TC02 COMMAND cliargs-test)
-set_tests_properties(cliargs-TC02 PROPERTIES PASS_REGULAR_EXPRESSION "Usage:.*")
+function(config_test_bin testbin)        
+    execute_process(COMMAND "./${testbin}"
+        OUTPUT_VARIABLE out1)
 
-add_test(NAME        cliargs-TC03 COMMAND cliargs-test -c 0)
-set_tests_properties(cliargs-TC03 PROPERTIES PASS_REGULAR_EXPRESSION "Case: 0" )
+    math(EXPR LOOP_STOP "${out1} - 1")
 
-add_test(NAME        cliargs-TC04 COMMAND cliargs-test --testcase 1)
-set_tests_properties(cliargs-TC04 PROPERTIES PASS_REGULAR_EXPRESSION "Case: 1" )
+    foreach(X RANGE 0 ${LOOP_STOP})
+        do_test(cliargs-test ${X} "-ok-")
+    endforeach()
+endfunction(config_test_bin)
 
-add_test(NAME        cliargs-TC05 COMMAND cliargs-test -c 2)
-set_tests_properties(cliargs-TC05 PROPERTIES PASS_REGULAR_EXPRESSION "Name: cliargs" )
-
-add_test(NAME        cliargs-TC06 COMMAND cliargs-test -c 3 -v -v)
-set_tests_properties(cliargs-TC06 PROPERTIES PASS_REGULAR_EXPRESSION "Verbosity: 2" )
-
-add_test(NAME        cliargs-TC07 COMMAND cliargs-test -c 4 -vvv)
-set_tests_properties(cliargs-TC07 PROPERTIES PASS_REGULAR_EXPRESSION "Verbosity: 3" )
-
+config_test_bin(test_cliargs)

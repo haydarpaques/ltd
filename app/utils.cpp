@@ -47,6 +47,7 @@ void print_help()
     log::println("    build         build a project");
     log::println("    run           run an executable in a project");
     log::println("    clean         clean a project");
+    log::println("    test          run tests for a project");
     log::println("    version       displays ltd version");
     log::println("    help          displays ltd help");
     log::println("");
