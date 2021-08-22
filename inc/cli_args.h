@@ -12,8 +12,11 @@
 namespace ltd
 {
      /**
+     * @brief 
+     * Provides helper functions for handling with command-line arguments.
      * 
-     * @details Class cli_arguments implements command line arguments helper tools.
+     * @details
+     * Class cli_arguments implements command line arguments helper tools.
      * 
      * This class provides command line arguments parser and simple help system. 
      * To use this class, initialize it with `argc` and `argv` taken from `main()`.
@@ -42,8 +45,6 @@ namespace ltd
      *              return 0;
      *          }
      * ```
-     * 
-     * @brief Provides helper functions for handling with command-line arguments.
      */ 
     class cli_arguments
     {

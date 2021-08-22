@@ -2,8 +2,10 @@
 #define _LTD_INCLUDE_LTD_H_
 
 /**
- * @brief Contains **{Ltd.}** C++ library.
+ * @brief 
+ * Contains **{Ltd.}** C++ library.
  * 
+ * @details
  * `ltd` namespace is the namespace containing all classes, functions, types 
  * and others belongs to ltd library. The namespace depends on `std` namespace
  * from standard template library.
