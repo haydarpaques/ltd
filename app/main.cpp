@@ -11,6 +11,22 @@
 
 using namespace ltd;
 
+/**
+  * A project can have a single library or multiple libraries. For single library,
+ * the library will use the project name as its name. i.e libproject.a.
+ * 
+ * For multiple libraries, it use the name of the folder under /libs where the
+ * source files are located. I.e if the folder is project_name/libs/mylib01 then
+ * the library will be called libmylib01.a.
+ * 
+ * @brief Generates config for libraries
+ * @param home_path         Path to LTD_HOME
+ * @param project_name      The project name
+ * @param lib_name          The library name
+ * @param path              The library source path
+ * @param cmake_text        The string buffer for CMake configuration script
+ * @return error            returns not_found if there are no source file to build
+ */
 error config_lib(const std::string &home_path, const std::string &project_name, const std::string &lib_name, const std::string &path, std::string &cmake_text)
 {
     // Create the section
@@ -46,6 +62,23 @@ error config_lib(const std::string &home_path, const std::string &project_name, 
     return error::no_error;
 }
 
+/**
+ * A project can have one or more applications or executable targets. For single app,
+ * the app will use the project name as its name. i.e myproject.
+ * 
+ * For multiple applications, it use the name of the folder under /appss where the
+ * source files are located. I.e if the folder is project_name/apps/myapp01 then
+ * the application will be called myapp01.
+ * 
+ * @brief Generates config for app/executable 
+ * @param home_path         Path to LTD_HOME
+ * @param project_name      The name of the project
+ * @param app_name          The name of the application
+ * @param path              The path of the application i.e ltd_home/project/apps/myapp01
+ * @param project_libs      Libraries for linking
+ * @param cmake_text        The string buffer to hold the CMake configuration
+ * @return error            returns not_found if there's no source file to build
+ */
 error config_app(const std::string &home_path, const std::string &project_name, const std::string &app_name, const std::string &path, const std::vector<std::string> &project_libs, std::string &cmake_text)
 {
     // Create the section
@@ -88,6 +121,61 @@ error config_app(const std::string &home_path, const std::string &project_name, 
     return error::no_error;
 }
 
+/**
+ * The ltd framework collaborate features on CMake test and its own framework. 
+ * It provides test_unit class that would let the user to create test unit and 
+ * the test unit will communicate with CMake's test framework through stdout.
+ * 
+ * I.e. to use the test framework, one might use it as follow:
+ * 
+ * ```
+ * #include <ltd.h>
+ * 
+ * using namespace ltd;
+ * 
+ * auto main(int argc, char** argv) -> int 
+ * {
+ *     test_unit tu;
+ * 
+ *     tu.test([&tu](){
+ *         tu.expect(true, "Expected true");
+ *     });
+ * 
+ *     tu.test([&tu](){
+ *         tu.expect(true, "Expected true");
+ *     });
+ *
+ *     tu.test([&tu](){
+ *         tu.expect(true, "Expected true");
+ *     });
+ *     
+ *     tu.run(argc, argv);
+ *     
+ *     return 0;
+ * }
+ * ```
+ * 
+ * Each test correlate with 1 test in CMake's test. The number of the test case 
+ * will be determined by calling the test binary. When the test binary called without
+ * arguments, it will return the number of tests available. To run the test, specify
+ * the test id in the cli argument.
+ * 
+ * ```
+ * >./mytest 1
+ * ```
+ * 
+ * Test id starts from 0. In this example, the program will run the second test case.
+ * 
+ * When test command runs, ltd will call ctest with -VV as parameter argument in 
+ * the project cache path.
+ * 
+ * @brief Generates config for test units
+ * @param home_path         Path to LTD_HOME
+ * @param project_name      The name of the project
+ * @param project_libs      Libraries for linking
+ * @param cmake_text        The string buffer to hold the CMake configuration
+ * @return error            returns not_found if there's no source file to build
+ */
 error config_test(const std::string &home_path, const std::string &project_name, const std::vector<std::string> &project_libs, std::string &cmake_text)
 {
     cmake_text += log::sprintln("\n# configure test executable target");
@@ -158,6 +246,22 @@ error config_test(const std::string &home_path, const std::string &project_name,
     return error::no_error;
 }
 
+/**
+ * Ltd will check whether the project is dirty. If it is dirty then a rebuild
+ * is needed.
+ * 
+ * To determine whether a project dirty or not, the following rules are used:
+ * - If there is no CMakeLists.txt file in the project folder
+ * - If the project folder timestamp is younger than the CMake list file.
+ * - If the apps folder timestamp is younger than the CMake list file.
+ * - If the libraries folder timestamp is younger than the CMake list file.
+ * 
+ * @brief Determines whether the rebuild is necessary
+ * @param home_path         Path to LTD_HOME
+ * @param project_name      The name of the project
+ * @return true             If the project needs a rebuild
+ * @return false            If the project binaries are at the latest
+ */
 bool is_project_dirty(const std::string &home_path, const std::string &project_name)
 {
     // We need to generate one when the following conditions met:
@@ -199,6 +303,23 @@ bool is_project_dirty(const std::string &home_path, const std::string &project_n
     return false;    
 }
 
+/**
+ * Run a project. The command format is as follow:
+ * - single executable
+ * ```
+ * ltd run project_name
+ * ```
+ * - multiple executables
+ * ```
+ * ltd run project_name/app_name
+ * ```
+ * 
+ * @brief Runs a project binary target
+ * @param home_path         Path to LTD_HOME
+ * @param project_name      The name of the project
+ * @return error            Returns `invalid_arguments` if project name is not specify or invalid
+ *                          Returns `not_found` if a target is not found 
+ */
 error run(const cli_arguments& flags, const std::string &home_path) 
 {
     // Reading the project name and validating
@@ -256,6 +377,18 @@ error run(const cli_arguments& flags, const std::string &home_path)
     return error::no_error;
 }
 
+/**
+ * Delete all temporary and binary output files.
+ * Command format:
+ * ```
+ * ltd clean project_name
+ * ```
+ * 
+ * @brief Cleans a project
+ * @param flags             `cli_arguments` containing the cli argument flags
+ * @param home_path         Path to LTD_HOME
+ * @return error            Returns invalid arguments when project name is not found or invalid
+ */
 error clean(const cli_arguments& flags, const std::string &home_path) 
 {
     // Reading the project name and validating
@@ -278,6 +411,59 @@ error clean(const cli_arguments& flags, const std::string &home_path)
     return error::no_error;          
 }
 
+/**
+ * The ltd framework collaborate features on CMake test and its own framework. 
+ * It provides test_unit class that would let the user to create test unit and 
+ * the test unit will communicate with CMake's test framework through stdout.
+ * 
+ * I.e. to use the test framework, one might use it as follow:
+ * 
+ * ```
+ * #include <ltd.h>
+ * 
+ * using namespace ltd;
+ * 
+ * auto main(int argc, char** argv) -> int 
+ * {
+ *     test_unit tu;
+ * 
+ *     tu.test([&tu](){
+ *         tu.expect(true, "Expected true");
+ *     });
+ * 
+ *     tu.test([&tu](){
+ *         tu.expect(true, "Expected true");
+ *     });
+ *
+ *     tu.test([&tu](){
+ *         tu.expect(true, "Expected true");
+ *     });
+ *     
+ *     tu.run(argc, argv);
+ *     
+ *     return 0;
+ * }
+ * ```
+ * 
+ * Each test correlate with 1 test in CMake's test. The number of the test case 
+ * will be determined by calling the test binary. When the test binary called without
+ * arguments, it will return the number of tests available. To run the test, specify
+ * the test id in the cli argument.
+ * 
+ * ```
+ * >./mytest 1
+ * ```
+ * 
+ * Test id starts from 0. In this example, the program will run the second test case.
+ * 
+ * When test command runs, ltd will call ctest with -VV as parameter argument in 
+ * the project cache path.
+ * 
+ * @brief Runs a test unit for a project.
+ * @param flags             `cli_arguments` containing the cli argument flags
+ * @param home_path         Path to LTD_HOME
+ * @return error            Returns invalid arguments when project name is not found or invalid
+ */
 error test(const cli_arguments& flags, const std::string &home_path) 
 {
     // Reading the project name and validating
@@ -306,8 +492,6 @@ error test(const cli_arguments& flags, const std::string &home_path)
 }
 
 /**
- * @brief Builds a project
- * 
  * Build binaries in a project. The binary can be an executable or a static library.
  * 
  * When the project folder has 'libs' folder, multiple libraries build mode is enabled.
@@ -316,9 +500,10 @@ error test(const cli_arguments& flags, const std::string &home_path)
  * In the project has lib folder, it will engage the single library mode. Meaning,
  * the system will compile all files under 'lib' folder and creates libproject_name.a as an output.
  * 
- * @param flags 
- * @param home_path 
- * @return error 
+ * @brief Builds a project.
+ * @param flags             `cli_arguments` containing the cli argument flags
+ * @param home_path         Path to LTD_HOME
+ * @return error            Returns invalid arguments when project name is not found or invalid
  */
 error build(const cli_arguments& flags, const std::string &home_path)
 {

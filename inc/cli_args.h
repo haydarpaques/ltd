@@ -12,9 +12,8 @@
 namespace ltd
 {
      /**
-     * @brief Provides helper functions for handling with command-line arguments.
-     *
-     * Class cli_arguments implements command line arguments helper tools.
+     * 
+     * @details Class cli_arguments implements command line arguments helper tools.
      * 
      * This class provides command line arguments parser and simple help system. 
      * To use this class, initialize it with `argc` and `argv` taken from `main()`.
@@ -43,6 +42,8 @@ namespace ltd
      *              return 0;
      *          }
      * ```
+     * 
+     * @brief Provides helper functions for handling with command-line arguments.
      */ 
     class cli_arguments
     {
@@ -86,35 +87,32 @@ namespace ltd
         cli_arguments();
 
         /**
-         * @brief
-         * Binds a string to an option.
-         * 
          * Call this function to bind a string variable to an argument. If 
          * the argument is provided in the cli command the variable will be 
          * assigned with that value. If the option is not provided, then a 
          * default value will be assigned to the variable.
+         * 
+         * @brief Binds a string to an option.
          */ 
         error bind(int* value, char short_opt, const std::string& long_opt, const std::string& help);
 
         /**
-         * @brief
-         * Binds a string to an option.
-         * 
          * Call this function to bind a string variable to an argument. If 
          * the argument is provided in the cli command the variable will be 
          * assigned with that value. If the option is not provided, then a 
          * default value will be assigned to the variable.
+         * 
+         * @brief Binds a string to an option.
          */ 
         error bind(std::string* value, char short_opt, const std::string& long_opt, const std::string& help);
 
         /**
-         * @brief
-         * Binds a string to an option.
-         * 
          * Call this function to bind a string variable to an argument. If 
          * the argument is provided in the cli command the variable will be 
          * assigned with that value. If the option is not provided, then a 
          * default value will be assigned to the variable.
+         * 
+         * @brief Binds a string to an option.
          */ 
         error bind(std::vector<const char*>* value, char short_opt, const std::string& long_opt, const std::string& help);
 
