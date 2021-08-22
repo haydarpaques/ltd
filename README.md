@@ -24,7 +24,7 @@ C++ code. It does so by providing:
 > ./ltd build ltd_sanbox
 ```
 
-## testing
+## Testing
 The ltd framework collaborate features on CMake test and its own framework. 
 It provides test_unit class that would let the user to create test unit and 
 the test unit will communicate with CMake's test framework through stdout.
