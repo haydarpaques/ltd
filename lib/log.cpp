@@ -1,7 +1,9 @@
-#include "../inc/fmt.h"
+#include "../inc/log.h"
 
-namespace ltd {
-    namespace fmt {
+namespace ltd 
+{
+    namespace log 
+    {
 
         const char* printf_formatter::read_adjustment_flag(std::ostream& out, const char* format)
         {
@@ -190,5 +192,5 @@ namespace ltd {
             }
             return format;
         }
-    } // namespace fmt
+    } // namespace log
 } // namespace ltd

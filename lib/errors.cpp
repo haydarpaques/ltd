@@ -20,4 +20,5 @@ namespace ltd
     const error error::deallocation_failure ("Deallocation failure");
     const error error::invalid_address      ("Invalid address"); 
     const error error::invalid_operation    ("Invalid operation");
+    const error error::duplication          ("Duplication");
 }

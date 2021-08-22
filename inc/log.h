@@ -1,23 +1,25 @@
-#ifndef _LTD_INCLUDE_FMT_H_
-#define _LTD_INCLUDE_FMT_H_
+#ifndef _LTD_INCLUDE_LOG_H_
+#define _LTD_INCLUDE_LOG_H_
 
 #include <iostream>
 #include <iomanip>
 #include <string>
 #include <sstream>
 
-namespace ltd {
-
+namespace ltd
+{
     /**
-     * @brief Namespace fmt provides formatting functionalities similar to stdio functions in c.
+     * @brief Namespace log provides logging and formatting functionalities similar to stdio functions in c.
      */ 
-	namespace fmt {
+    namespace log
+    {
         enum class print_state {
             Next, Precision, Prepared
         };
 
         /**
-         * @brief struct printf_formatter provides internal mechanism in handling printf verbs.
+         * @brief 
+         * struct printf_formatter provides internal mechanism in handling printf verbs.
          */ 
         struct printf_formatter {
             bool pound_flag = false;
@@ -35,14 +37,16 @@ namespace ltd {
         };
 
         /**
-         * @brief Default function for osprintf.
+         * @brief 
+         * Default function for osprintf.
          */ 
         inline void osprintf(print_state state, std::ostream& out, const char* format) {
             out << format;
         }
 
         /**
-         * @brief Function template for handling printf like functionality.
+         * @brief 
+         * Function template for handling printf like functionality.
          */  
         template<typename T, typename... Args>
         void osprintf(print_state state, std::ostream& out, const char* format, T value, Args ...args)
@@ -95,7 +99,6 @@ namespace ltd {
 
                         if (formatter.expect_width) 
                         {
-                            // out.width(value);
                             if (formatter.expect_precision) 
                             {
                                 return osprintf(print_state::Precision, out, format, args...);
@@ -107,7 +110,6 @@ namespace ltd {
                         }
                         else if (formatter.expect_precision) 
                         {
-                            // out.precision(value);
                             return osprintf(print_state::Prepared, out, format, args...);
                         }
                         out << value;
@@ -124,7 +126,8 @@ namespace ltd {
         }
 
         /**
-         * @brief Function template for printf.
+         * @brief 
+         * Function template for printf.
          */ 
         template<typename... Args>
         void printf(const char* format, Args... args) 
@@ -133,7 +136,8 @@ namespace ltd {
         }
 
         /**
-         * @brief Function template for printf with carriage return.
+         * @brief 
+         * Function template for printf with carriage return.
          */ 
         template<typename... Args>
         void println(const char* format, Args... args)
@@ -143,7 +147,8 @@ namespace ltd {
         }
 
         /**
-         * @brief Function template for sprintf.
+         * @brief 
+         * Function template for sprintf.
          */ 
         template<typename... Args>
         std::string sprintf(const char* format, Args... args)
@@ -154,7 +159,8 @@ namespace ltd {
         }
 
         /**
-         * @brief Function template for printing to string with carriage return.
+         * @brief 
+         * Function template for printing to string with carriage return.
          */ 
         template<typename... Args>
         std::string sprintln(const char* format, Args... args)
@@ -164,7 +170,7 @@ namespace ltd {
             sstream << std::endl;
             return sstream.str();
         }
-	} // namespace fmt
+    } // namespace log
 } // namespace ltd
 
-#endif // _LTD_INCLUDE_FMT_H_
+#endif // _LTD_INCLUDE_LOG_H_
