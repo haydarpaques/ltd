@@ -18,7 +18,8 @@ namespace ltd
         };
 
         /**
-         * @brief struct printf_formatter provides internal mechanism in handling printf verbs.
+         * @brief 
+         * struct printf_formatter provides internal mechanism in handling printf verbs.
          */ 
         struct printf_formatter {
             bool pound_flag = false;
@@ -36,14 +37,16 @@ namespace ltd
         };
 
         /**
-         * @brief Default function for osprintf.
+         * @brief 
+         * Default function for osprintf.
          */ 
         inline void osprintf(print_state state, std::ostream& out, const char* format) {
             out << format;
         }
 
         /**
-         * @brief Function template for handling printf like functionality.
+         * @brief 
+         * Function template for handling printf like functionality.
          */  
         template<typename T, typename... Args>
         void osprintf(print_state state, std::ostream& out, const char* format, T value, Args ...args)
@@ -123,7 +126,8 @@ namespace ltd
         }
 
         /**
-         * @brief Function template for printf.
+         * @brief 
+         * Function template for printf.
          */ 
         template<typename... Args>
         void printf(const char* format, Args... args) 
@@ -132,7 +136,8 @@ namespace ltd
         }
 
         /**
-         * @brief Function template for printf with carriage return.
+         * @brief 
+         * Function template for printf with carriage return.
          */ 
         template<typename... Args>
         void println(const char* format, Args... args)
@@ -142,7 +147,8 @@ namespace ltd
         }
 
         /**
-         * @brief Function template for sprintf.
+         * @brief 
+         * Function template for sprintf.
          */ 
         template<typename... Args>
         std::string sprintf(const char* format, Args... args)
@@ -153,7 +159,8 @@ namespace ltd
         }
 
         /**
-         * @brief Function template for printing to string with carriage return.
+         * @brief 
+         * Function template for printing to string with carriage return.
          */ 
         template<typename... Args>
         std::string sprintln(const char* format, Args... args)

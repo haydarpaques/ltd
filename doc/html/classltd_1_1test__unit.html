@@ -13,6 +13,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -73,22 +74,65 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p><a class="el" href="classltd_1_1test__unit.html" title="test_unit provides unit testing framework">test_unit</a> provides unit testing framework  
+ <a href="classltd_1_1test__unit.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="test__unit_8h_source.html">test_unit.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad0f5d51d4b66ede4d2676533074c6612"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1test__unit.html#ad0f5d51d4b66ede4d2676533074c6612">test_unit</a> ()</td></tr>
+<tr class="memdesc:ad0f5d51d4b66ede4d2676533074c6612"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new test unit object.  <a href="classltd_1_1test__unit.html#ad0f5d51d4b66ede4d2676533074c6612">More...</a><br /></td></tr>
 <tr class="separator:ad0f5d51d4b66ede4d2676533074c6612"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc3369628478a5d6299fe35fdd95b39e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1test__unit.html#acc3369628478a5d6299fe35fdd95b39e">~test_unit</a> ()</td></tr>
+<tr class="memdesc:acc3369628478a5d6299fe35fdd95b39e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the test unit object.  <a href="classltd_1_1test__unit.html#acc3369628478a5d6299fe35fdd95b39e">More...</a><br /></td></tr>
 <tr class="separator:acc3369628478a5d6299fe35fdd95b39e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae28c30ec5b20cad3323dd5ef675b3ccb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1test__unit.html#ae28c30ec5b20cad3323dd5ef675b3ccb">test</a> (std::function&lt; void()&gt; test_function)</td></tr>
+<tr class="memdesc:ae28c30ec5b20cad3323dd5ef675b3ccb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a test case.  <a href="classltd_1_1test__unit.html#ae28c30ec5b20cad3323dd5ef675b3ccb">More...</a><br /></td></tr>
 <tr class="separator:ae28c30ec5b20cad3323dd5ef675b3ccb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2c0bbda624bc1bf58578e9ffda72495"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1test__unit.html#aa2c0bbda624bc1bf58578e9ffda72495">expect</a> (bool condition, const std::string &amp;message)</td></tr>
+<tr class="memdesc:aa2c0bbda624bc1bf58578e9ffda72495"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expect a condition to be true for testing purpose.  <a href="classltd_1_1test__unit.html#aa2c0bbda624bc1bf58578e9ffda72495">More...</a><br /></td></tr>
 <tr class="separator:aa2c0bbda624bc1bf58578e9ffda72495"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff1a02e137001ad3ec3122c0cdd73626"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1test__unit.html#aff1a02e137001ad3ec3122c0cdd73626">run</a> (int argc, char **argv)</td></tr>
+<tr class="memdesc:aff1a02e137001ad3ec3122c0cdd73626"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the test unit.  <a href="classltd_1_1test__unit.html#aff1a02e137001ad3ec3122c0cdd73626">More...</a><br /></td></tr>
 <tr class="separator:aff1a02e137001ad3ec3122c0cdd73626"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p ><a class="el" href="classltd_1_1test__unit.html" title="test_unit provides unit testing framework">test_unit</a> provides unit testing framework </p>
+<p >The ltd framework collaborate features on CMake test and its own framework. It provides <a class="el" href="classltd_1_1test__unit.html" title="test_unit provides unit testing framework">test_unit</a> class that would let the user to create test unit and the test unit will communicate with CMake's test framework through stdout.</p>
+<p >I.e. to use the test framework, one might use it as follow:</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="ltd_8h.html">ltd.h</a>&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespaceltd.html">ltd</a>;</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">auto</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv) -&gt; <span class="keywordtype">int</span> </div>
+<div class="line">{</div>
+<div class="line">    <a class="code hl_function" href="classltd_1_1test__unit.html#ad0f5d51d4b66ede4d2676533074c6612">test_unit</a> tu;</div>
+<div class="line"> </div>
+<div class="line">    tu.test([&amp;tu](){</div>
+<div class="line">        tu.expect(<span class="keyword">true</span>, <span class="stringliteral">&quot;Expected true&quot;</span>);</div>
+<div class="line">    });</div>
+<div class="line"> </div>
+<div class="line">    tu.test([&amp;tu](){</div>
+<div class="line">        tu.expect(<span class="keyword">true</span>, <span class="stringliteral">&quot;Expected true&quot;</span>);</div>
+<div class="line">    });</div>
+<div class="line"> </div>
+<div class="line">    tu.test([&amp;tu](){</div>
+<div class="line">        tu.expect(<span class="keyword">true</span>, <span class="stringliteral">&quot;Expected true&quot;</span>);</div>
+<div class="line">    });</div>
+<div class="line">    </div>
+<div class="line">    tu.run(argc, argv);</div>
+<div class="line">    </div>
+<div class="line">    <span class="keywordflow">return</span> 0;</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassltd_1_1test__unit_html_ad0f5d51d4b66ede4d2676533074c6612"><div class="ttname"><a href="classltd_1_1test__unit.html#ad0f5d51d4b66ede4d2676533074c6612">ltd::test_unit::test_unit</a></div><div class="ttdeci">test_unit()</div><div class="ttdoc">Construct a new test unit object.</div></div>
+<div class="ttc" id="altd_8h_html"><div class="ttname"><a href="ltd_8h.html">ltd.h</a></div></div>
+<div class="ttc" id="anamespaceltd_html"><div class="ttname"><a href="namespaceltd.html">ltd</a></div><div class="ttdoc">Contains **{Ltd.}** C++ library.</div><div class="ttdef"><b>Definition:</b> cli_args.h:13</div></div>
+</div><!-- fragment --><p >Each test correlate with 1 test in CMake's test. The number of the test case will be determined by calling the test binary. When the test binary called without arguments, it will return the number of tests available. To run the test, specify the test id in the cli argument.</p>
+<div class="fragment"><div class="line">&gt;./mytest 1</div>
+</div><!-- fragment --><p >Test id starts from 0. In this example, the program will run the second test case.</p>
+<p >When test command runs, ltd will call ctest with -VV as parameter argument in the project cache path. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad0f5d51d4b66ede4d2676533074c6612" name="ad0f5d51d4b66ede4d2676533074c6612"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad0f5d51d4b66ede4d2676533074c6612">&#9670;&nbsp;</a></span>test_unit()</h2>
 
@@ -103,6 +147,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Construct a new test unit object. </p>
 
 </div>
 </div>
@@ -120,6 +166,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Destroy the test unit object. </p>
 
 </div>
 </div>
@@ -150,6 +198,16 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Expect a condition to be true for testing purpose. </p>
+<p >Use this function to test a condition. This will determine whether a test is pass or not.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">condition</td><td></td></tr>
+    <tr><td class="paramname">message</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="aff1a02e137001ad3ec3122c0cdd73626" name="aff1a02e137001ad3ec3122c0cdd73626"></a>
@@ -178,6 +236,15 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Run the test unit. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argc</td><td>The argc </td></tr>
+    <tr><td class="paramname">argv</td><td>The argv </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="ae28c30ec5b20cad3323dd5ef675b3ccb" name="ae28c30ec5b20cad3323dd5ef675b3ccb"></a>
@@ -195,6 +262,14 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Register a test case. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">test_function</td><td>The test function for the test case. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -13,6 +13,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -105,7 +106,8 @@ Static Public Attributes</h2></td></tr>
 <tr class="memdesc:a2da569b26685b452fcde28d3d3fda992"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents an error caused by failing type conversion.  <a href="classltd_1_1error.html#a2da569b26685b452fcde28d3d3fda992">More...</a><br /></td></tr>
 <tr class="separator:a2da569b26685b452fcde28d3d3fda992"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c2390fef1246ab36fde25961eafe82c"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classltd_1_1error.html">error</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1error.html#a6c2390fef1246ab36fde25961eafe82c">not_found</a></td></tr>
-<tr class="memdesc:a6c2390fef1246ab36fde25961eafe82c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represetns an error on failing to look for a value.  <a href="classltd_1_1error.html#a6c2390fef1246ab36fde25961eafe82c">More...</a><br /></td></tr>
+<tr class="memdesc:a6c2390fef1246ab36fde25961eafe82c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represetns an error on failing to look for a value. <br  />
+  <a href="classltd_1_1error.html#a6c2390fef1246ab36fde25961eafe82c">More...</a><br /></td></tr>
 <tr class="separator:a6c2390fef1246ab36fde25961eafe82c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f488e360a30f6ea7128e5940dca0a69"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classltd_1_1error.html">error</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1error.html#a2f488e360a30f6ea7128e5940dca0a69">no_error</a></td></tr>
 <tr class="memdesc:a2f488e360a30f6ea7128e5940dca0a69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Repesents a state where there were no error occured.  <a href="classltd_1_1error.html#a2f488e360a30f6ea7128e5940dca0a69">More...</a><br /></td></tr>
@@ -120,6 +122,7 @@ Static Public Attributes</h2></td></tr>
 <tr class="memdesc:ac51b94779b06c2069a2bcd86ccac813f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error caused by addressing issues.  <a href="classltd_1_1error.html#ac51b94779b06c2069a2bcd86ccac813f">More...</a><br /></td></tr>
 <tr class="separator:ac51b94779b06c2069a2bcd86ccac813f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe9fa9ff6112babdb0a8b4d8cdb19035"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classltd_1_1error.html">error</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1error.html#afe9fa9ff6112babdb0a8b4d8cdb19035">invalid_operation</a></td></tr>
+<tr class="memdesc:afe9fa9ff6112babdb0a8b4d8cdb19035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error caused by some failed operation.  <a href="classltd_1_1error.html#afe9fa9ff6112babdb0a8b4d8cdb19035">More...</a><br /></td></tr>
 <tr class="separator:afe9fa9ff6112babdb0a8b4d8cdb19035"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a544be9e85663b225124c9b9290c71d64"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classltd_1_1error.html">error</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1error.html#a544be9e85663b225124c9b9290c71d64">duplication</a></td></tr>
 <tr class="memdesc:a544be9e85663b225124c9b9290c71d64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error caused by duplication occured in the process.  <a href="classltd_1_1error.html#a544be9e85663b225124c9b9290c71d64">More...</a><br /></td></tr>
@@ -148,12 +151,12 @@ Friends</h2></td></tr>
 <div class="line">        <span class="keywordflow">if</span> (value &lt; 0)</div>
 <div class="line">            <span class="keywordflow">return</span> <a class="code hl_variable" href="classltd_1_1error.html#a1fc471157d5f5b9fb09b615af23c8fb5">error::invalid_argument</a>;</div>
 <div class="line">    } </div>
-<div class="ttc" id="aclassltd_1_1error_html_a1fc471157d5f5b9fb09b615af23c8fb5"><div class="ttname"><a href="classltd_1_1error.html#a1fc471157d5f5b9fb09b615af23c8fb5">ltd::error::invalid_argument</a></div><div class="ttdeci">static const error invalid_argument</div><div class="ttdoc">Represens error for passing invalid arguments to a function.</div><div class="ttdef"><b>Definition:</b> errors.h:85</div></div>
+<div class="ttc" id="aclassltd_1_1error_html_a1fc471157d5f5b9fb09b615af23c8fb5"><div class="ttname"><a href="classltd_1_1error.html#a1fc471157d5f5b9fb09b615af23c8fb5">ltd::error::invalid_argument</a></div><div class="ttdeci">static const error invalid_argument</div><div class="ttdoc">Represens error for passing invalid arguments to a function.</div><div class="ttdef"><b>Definition:</b> errors.h:94</div></div>
 </div><!-- fragment --><p >Equality operator can be used to check the kind of the error. </p><div class="fragment"><div class="line">{C++}</div>
 <div class="line">    <span class="keyword">auto</span> err = perform_operation(0);</div>
 <div class="line">    <span class="keywordflow">if</span> ( err != <a class="code hl_variable" href="classltd_1_1error.html#a2f488e360a30f6ea7128e5940dca0a69">no_error</a>)</div>
 <div class="line">        <span class="keywordflow">return</span> err;</div>
-<div class="ttc" id="aclassltd_1_1error_html_a2f488e360a30f6ea7128e5940dca0a69"><div class="ttname"><a href="classltd_1_1error.html#a2f488e360a30f6ea7128e5940dca0a69">ltd::error::no_error</a></div><div class="ttdeci">static const error no_error</div><div class="ttdoc">Repesents a state where there were no error occured.</div><div class="ttdef"><b>Definition:</b> errors.h:109</div></div>
+<div class="ttc" id="aclassltd_1_1error_html_a2f488e360a30f6ea7128e5940dca0a69"><div class="ttname"><a href="classltd_1_1error.html#a2f488e360a30f6ea7128e5940dca0a69">ltd::error::no_error</a></div><div class="ttdeci">static const error no_error</div><div class="ttdoc">Repesents a state where there were no error occured.</div><div class="ttdef"><b>Definition:</b> errors.h:124</div></div>
 </div><!-- fragment --> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1f3259b7167e0e2f8f9226071f71f01e" name="a1f3259b7167e0e2f8f9226071f71f01e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1f3259b7167e0e2f8f9226071f71f01e">&#9670;&nbsp;</a></span>error()</h2>
@@ -434,6 +437,8 @@ Friends</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Error caused by some failed operation. </p>
 <p >Return this value when an operation has failed. </p>
 
 </div>
@@ -483,7 +488,8 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Represetns an error on failing to look for a value. </p>
+<p>Represetns an error on failing to look for a value. <br  />
+ </p>
 <p >Error returned after an operation of trying to look for a value. This can be a look up, query, or other operation opening a resource. </p>
 
 </div>

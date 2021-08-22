@@ -83,81 +83,94 @@ namespace ltd
 
     public:
         /**
-         * @brief Construct a new cli args object
+         * @brief 
+         * Construct a new cli args object
          */
         cli_arguments();
 
         /**
+         * @brief 
+         * Binds a string to an option.
+         * 
+         * @details
          * Call this function to bind a string variable to an argument. If 
          * the argument is provided in the cli command the variable will be 
          * assigned with that value. If the option is not provided, then a 
          * default value will be assigned to the variable.
-         * 
-         * @brief Binds a string to an option.
          */ 
         error bind(int* value, char short_opt, const std::string& long_opt, const std::string& help);
 
         /**
+         * @brief 
+         * Binds a string to an option.
+         * 
+         * @details
          * Call this function to bind a string variable to an argument. If 
          * the argument is provided in the cli command the variable will be 
          * assigned with that value. If the option is not provided, then a 
          * default value will be assigned to the variable.
-         * 
-         * @brief Binds a string to an option.
          */ 
         error bind(std::string* value, char short_opt, const std::string& long_opt, const std::string& help);
 
         /**
+         * @brief 
+         * Binds a string to an option.
+         * 
+         * @details
          * Call this function to bind a string variable to an argument. If 
          * the argument is provided in the cli command the variable will be 
          * assigned with that value. If the option is not provided, then a 
          * default value will be assigned to the variable.
-         * 
-         * @brief Binds a string to an option.
          */ 
         error bind(std::vector<const char*>* value, char short_opt, const std::string& long_opt, const std::string& help);
 
         /**
          * @brief 
+         * Iterates all registered options
          * 
-         * @param func 
+         * @param func Iterator callback
          */
         void  iterate_options(void (func)(std::variant<int*, std::string*, std::vector<const char*>*>, char, const std::string&, const std::string&));
 
         /**
-         * @brief Get the short opt object
+         * @brief 
+         * Get the short opt object from a long option
          * 
-         * @param long_opt 
+         * @param long_opt  The long option
          * @return ret<char, error> 
          */
         ret<char, error> get_short_opt(const std::string& long_opt) const;
 
         /**
-         * @brief Get the long opt object
+         * @brief 
+         * Get the long opt object from short option
          * 
-         * @param short_opt 
+         * @param short_opt     The short option
          * @return ret<const std::string&, error> 
          */
         ret<const std::string&, error> get_long_opt(char short_opt) const;
 
         /**
-         * @brief Get the index object
+         * @brief 
+         * Get the index object by short option
          * 
-         * @param short_opt 
+         * @param short_opt     The short option
          * @return ret<int, error> 
          */
         ret<int, error> get_index(char short_opt) const;
 
         /**
          * @brief 
+         * Retrieve argv value in the given index
          * 
-         * @param index 
+         * @param index     The index of argv to retrieve
          * @return ret<const char*, error> 
          */
         ret<const char*, error> at(size_t index) const;
 
         /**
          * @brief 
+         * Parse argc and argv for bindings
          * 
          * @param argc 
          * @param argv 
@@ -166,15 +179,18 @@ namespace ltd
         error parse(int argc, char** argv);
 
         /**
-         * @brief Get the `argc` value.
+         * @brief 
+         * Get the `argc` value.
          * 
          * @return size_t The value of argc.
          */
         size_t size() const;
 
         /**
-         * @brief Prints options switches to terminal.
+         * @brief 
+         * Prints options switches to terminal.
          * 
+         * @details
          * Prints all short and long options into the terminal. This can be used
          * with help display.
          * 

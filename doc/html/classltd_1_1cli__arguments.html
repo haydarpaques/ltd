@@ -13,6 +13,7 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="custom.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -94,19 +95,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a7da428c452e49fdeb518235c1744c0ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binds a string to an option.  <a href="classltd_1_1cli__arguments.html#a7da428c452e49fdeb518235c1744c0ee">More...</a><br /></td></tr>
 <tr class="separator:a7da428c452e49fdeb518235c1744c0ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b0a7ff5c00048873ad605589075531a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1cli__arguments.html#a1b0a7ff5c00048873ad605589075531a">iterate_options</a> (void(func)(std::variant&lt; int *, std::string *, std::vector&lt; const char * &gt; * &gt;, char, const std::string &amp;, const std::string &amp;))</td></tr>
+<tr class="memdesc:a1b0a7ff5c00048873ad605589075531a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterates all registered options.  <a href="classltd_1_1cli__arguments.html#a1b0a7ff5c00048873ad605589075531a">More...</a><br /></td></tr>
 <tr class="separator:a1b0a7ff5c00048873ad605589075531a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b276b9c6d36c161233be2be7fa4cd56"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceltd.html#a8cfa8fe5d0cace4767f29c38bb98dc4b">ret</a>&lt; char, <a class="el" href="classltd_1_1error.html">error</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1cli__arguments.html#a7b276b9c6d36c161233be2be7fa4cd56">get_short_opt</a> (const std::string &amp;long_opt) const</td></tr>
-<tr class="memdesc:a7b276b9c6d36c161233be2be7fa4cd56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the short opt object.  <a href="classltd_1_1cli__arguments.html#a7b276b9c6d36c161233be2be7fa4cd56">More...</a><br /></td></tr>
+<tr class="memdesc:a7b276b9c6d36c161233be2be7fa4cd56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the short opt object from a long option.  <a href="classltd_1_1cli__arguments.html#a7b276b9c6d36c161233be2be7fa4cd56">More...</a><br /></td></tr>
 <tr class="separator:a7b276b9c6d36c161233be2be7fa4cd56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8465394fc97e138a50eca062d343953"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceltd.html#a8cfa8fe5d0cace4767f29c38bb98dc4b">ret</a>&lt; const std::string &amp;, <a class="el" href="classltd_1_1error.html">error</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1cli__arguments.html#ac8465394fc97e138a50eca062d343953">get_long_opt</a> (char short_opt) const</td></tr>
-<tr class="memdesc:ac8465394fc97e138a50eca062d343953"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the long opt object.  <a href="classltd_1_1cli__arguments.html#ac8465394fc97e138a50eca062d343953">More...</a><br /></td></tr>
+<tr class="memdesc:ac8465394fc97e138a50eca062d343953"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the long opt object from short option.  <a href="classltd_1_1cli__arguments.html#ac8465394fc97e138a50eca062d343953">More...</a><br /></td></tr>
 <tr class="separator:ac8465394fc97e138a50eca062d343953"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab405cf461fe2781968d89ca00434725a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceltd.html#a8cfa8fe5d0cace4767f29c38bb98dc4b">ret</a>&lt; int, <a class="el" href="classltd_1_1error.html">error</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1cli__arguments.html#ab405cf461fe2781968d89ca00434725a">get_index</a> (char short_opt) const</td></tr>
-<tr class="memdesc:ab405cf461fe2781968d89ca00434725a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index object.  <a href="classltd_1_1cli__arguments.html#ab405cf461fe2781968d89ca00434725a">More...</a><br /></td></tr>
+<tr class="memdesc:ab405cf461fe2781968d89ca00434725a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index object by short option.  <a href="classltd_1_1cli__arguments.html#ab405cf461fe2781968d89ca00434725a">More...</a><br /></td></tr>
 <tr class="separator:ab405cf461fe2781968d89ca00434725a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a573add0fceafe5e3681100641e427633"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceltd.html#a8cfa8fe5d0cace4767f29c38bb98dc4b">ret</a>&lt; const char *, <a class="el" href="classltd_1_1error.html">error</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1cli__arguments.html#a573add0fceafe5e3681100641e427633">at</a> (size_t index) const</td></tr>
+<tr class="memdesc:a573add0fceafe5e3681100641e427633"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve argv value in the given index.  <a href="classltd_1_1cli__arguments.html#a573add0fceafe5e3681100641e427633">More...</a><br /></td></tr>
 <tr class="separator:a573add0fceafe5e3681100641e427633"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bfb10a65b97282cb4fb5bfe81825701"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classltd_1_1error.html">error</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1cli__arguments.html#a6bfb10a65b97282cb4fb5bfe81825701">parse</a> (int argc, char **argv)</td></tr>
+<tr class="memdesc:a6bfb10a65b97282cb4fb5bfe81825701"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse argc and argv for bindings.  <a href="classltd_1_1cli__arguments.html#a6bfb10a65b97282cb4fb5bfe81825701">More...</a><br /></td></tr>
 <tr class="separator:a6bfb10a65b97282cb4fb5bfe81825701"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfee5b8243d32ca36ff1659d25083bbc"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classltd_1_1cli__arguments.html#abfee5b8243d32ca36ff1659d25083bbc">size</a> () const</td></tr>
 <tr class="memdesc:abfee5b8243d32ca36ff1659d25083bbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <code>argc</code> value.  <a href="classltd_1_1cli__arguments.html#abfee5b8243d32ca36ff1659d25083bbc">More...</a><br /></td></tr>
@@ -178,9 +182,11 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Retrieve argv value in the given index. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">index</td><td></td></tr>
+    <tr><td class="paramname">index</td><td>The index of argv to retrieve </td></tr>
   </table>
   </dd>
 </dl>
@@ -333,10 +339,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get the index object. </p>
+<p>Get the index object by short option. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">short_opt</td><td></td></tr>
+    <tr><td class="paramname">short_opt</td><td>The short option </td></tr>
   </table>
   </dd>
 </dl>
@@ -360,10 +366,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get the long opt object. </p>
+<p>Get the long opt object from short option. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">short_opt</td><td></td></tr>
+    <tr><td class="paramname">short_opt</td><td>The short option </td></tr>
   </table>
   </dd>
 </dl>
@@ -387,10 +393,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get the short opt object. </p>
+<p>Get the short opt object from a long option. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">long_opt</td><td></td></tr>
+    <tr><td class="paramname">long_opt</td><td>The long option </td></tr>
   </table>
   </dd>
 </dl>
@@ -413,9 +419,11 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Iterates all registered options. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">func</td><td></td></tr>
+    <tr><td class="paramname">func</td><td>Iterator callback </td></tr>
   </table>
   </dd>
 </dl>
@@ -447,6 +455,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Parse argc and argv for bindings. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">argc</td><td></td></tr>
