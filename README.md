@@ -21,7 +21,7 @@ C++ code. It does so by providing:
 > cd ltd
 > cmake ../../ltd/ .
 > cmake --build .
-> ./ltd build ltd_sanbox
+> ./ltd build ltd_sandbox
 ```
 
 ## Testing
