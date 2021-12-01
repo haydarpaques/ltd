@@ -98,26 +98,6 @@ the project cache path.
   }
   ```
 
-- **Application Framework**
-
-  Application framework encapsulate functionalities in creating application using C++.
-  It also gives an underlying functionalities in creating test unit framework.
-  
-  ```C++
-  class my_app : public application
-  {
-  public:
-    int main()
-    {
-      // Do something...
-      return 0;
-    }
-  };
-  
-  my_app the_app;
-  
-  ```
-
 - **Pointers**
 
   `std`'s smart pointers are powerful. But it can lead into several performance and
