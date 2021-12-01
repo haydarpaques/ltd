@@ -171,44 +171,27 @@ consecutively.
 
 ```
 $LTD_HOME
-  |
   +- pkgs
-  |    |
   |    +- myproject1
-  |         |
   |         +- inc
-  |         |
   |         +- bin
   |
   +- caches
   |
   +- myproject1
-  |    |
   |    +- apps
-  |    |  |
   |    |  +- myapp1
-  |    |  |
   |    |  +- myapp2
-  |    |
   |    +- doc
-  |    |
   |    +- inc
-  |    |
   |    +- libs
-  |    |  |
   |    |  +- mylib1
-  |    |  |
   |    |  +- mylib2
-  |    |
   |    +- tests
   |
   +- myproject2
-       |
        +- app
-       |
        +- doc
-       |
        +- lib
-       |
        +- tests
 ```
