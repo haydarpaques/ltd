@@ -71,3 +71,53 @@ Test id starts from 0. In this example, the program will run the second test cas
 
 When test command runs, ltd will call ctest with -VV as parameter argument in 
 the project cache path.
+
+## Directory Structure
+
+In this example 'myproject1' has multiple applications and multiple library. 'myproject2' only
+has 1 application and 1 library. The names of the binaries are 'myproject2' and 'myproject2.a'
+consecutively.
+
+```
+$LTD_HOME
+  |
+  +- pkgs
+  |    |
+  |    +- myproject1
+  |         |
+  |         +- inc
+  |         |
+  |         +- bin
+  |
+  +- caches
+  |
+  +- myproject1
+  |    |
+  |    +- apps
+  |    |  |
+  |    |  +- myapp1
+  |    |  |
+  |    |  +- myapp2
+  |    |
+  |    +- doc
+  |    |
+  |    +- inc
+  |    |
+  |    +- libs
+  |    |  |
+  |    |  +- mylib1
+  |    |  |
+  |    |  +- mylib2
+  |    |
+  |    +- tests
+  |
+  +- myproject2
+       |
+       +- app
+       |
+       +- doc
+       |
+       +- lib
+       |
+       +- tests
+```

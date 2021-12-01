@@ -189,11 +189,15 @@ error config_test(const std::string &home_path, const std::string &project_name,
 {
     cmake_text += log::sprintln("\n# configure test executable target");
 
+    // [TODO: check project name before execute build... this command crash because the project name is wrong ]
+    // ./ltd build ltd_sanbox << ERROR!!!
+
     // Collect source files
     std::string src_path = home_path + project_name + "/tests";
     std::vector<std::string> files;
     for (const auto& dir_entry : fs::directory_iterator(src_path))
     {
+        log::println("%s", dir_entry.path().string());
         if (fs::is_directory(dir_entry) == true)
                 continue;
 
@@ -547,6 +551,12 @@ error build(const cli_arguments& flags, const std::string &home_path)
         return error::invalid_argument;
     }
 
+    // Check whether the project exist!
+    if (! fs::exists(home_path + project_name)) {
+        log::println("Error project '%s' not found. Exiting...", project_name);
+        return error::not_found;
+    }
+
     // Check whether we need to generate new CMakeLists.txt           
     if (is_project_dirty(home_path, project_name)) {
         std::string cmake_txt;
@@ -609,6 +619,7 @@ error build(const cli_arguments& flags, const std::string &home_path)
         out.close();
     }
 
+    // Create directory if it does not exist
     if (fs::exists(home_path + "caches/" + project_name) == false)
         fs::create_directory(home_path + "caches/" + project_name);
 
