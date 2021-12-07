@@ -136,6 +136,62 @@ error config_app(const std::string &home_path, const std::string &project_name, 
     if (files.length() == 0)
         return error::not_found;
 
+    std::string lib_config_file;
+    lib_config_file = home_path + "/" + project_name + "/ltd-lib-config.txt";
+    // log::println("config: '%s'", lib_config_file);
+
+    if (fs::exists(lib_config_file) == true)
+    {
+        std::string str1;
+        std::string str2;
+        std::ifstream infile_lib;
+        char line[5004];
+        std::string ldirs_line = "";
+        std::string other_lines = "";
+        std::string libdir;
+        std::string word1 = "";
+        std::string word2 = "";
+        bool ldir_found = false;
+
+        // log::println("File %s exists.", lib_config_file);
+        infile_lib.open(lib_config_file);
+        while (!infile_lib.eof())
+        {
+            infile_lib.getline(line, 4096);
+            str1 = "";
+            str1.append(line);
+            str2 = trim(str1);
+            if (str2.length() == 0)
+            {
+                continue;
+            }
+            // std::cout << "line: " << line << std::endl;
+
+            // stringstream class check1
+            std::stringstream check1(line);
+
+            check1 >> word1;
+            if (word1.compare("LD_LDIRS") == 0)
+            {
+                check1 >> word2;
+                if (word2.compare("=") == 0)
+                {
+                    while (check1 >> libdir)
+                    {
+                        // std::cout << "libdir: " << libdir << std::endl;
+                        cmake_text += log::sprintln("link_directories(%s)", libdir);
+                    }
+                    break;
+                }
+            }
+        }
+        infile_lib.close();
+    }
+
+    cmake_text += log::sprintln("");
+    // add link directories
+    // cmake_text += log::sprintln("link_directories(%s)", opt_ldirs);
+
     cmake_text += log::sprintln("add_executable( %s-exe %s)", app_name, files);
     cmake_text += log::sprintln("target_include_directories( %s-exe PUBLIC \"${PROJECT_BINARY_DIR}\")", app_name);
     cmake_text += log::sprintln("target_include_directories( %s-exe PUBLIC \"${PROJECT_SOURCE_DIR}/inc/\")", app_name);
@@ -148,10 +204,6 @@ error config_app(const std::string &home_path, const std::string &project_name, 
     }
 
     cmake_text += log::sprintln("target_link_libraries( %s-exe %s stdc++fs)", app_name, local_libs);
-
-    std::string lib_config_file;
-    lib_config_file = home_path + "/" + project_name + "/ltd-lib-config.txt";
-    // log::println("config: '%s'", lib_config_file);
 
     if (fs::exists(lib_config_file) == true)
     {
@@ -771,33 +823,6 @@ error build(const cli_arguments &flags, const std::string &home_path)
     return error::no_error;
 }
 
-error insert_ldlibs(std::stringstream &check1)
-{
-    std::string intermediate;
-
-    std::vector<std::string> tokensv;
-
-    std::string str1 = "";
-    // std::string str2 = trim(str1);
-    std::cout << "check1: " << check1.rdbuf() << std::endl;
-    // std::stringstream check2(check1.rdbuf());
-
-    // Tokenizing w.r.t. space ' '
-    while (getline(check1, intermediate, ' '))
-    {
-        std::string token = trim(intermediate);
-        std::cout << "token: " << token << std::endl;
-        tokensv.push_back(token);
-    }
-
-    std::cout << "tokensv" << std::endl;
-    for (int i = 0; i < tokensv.size(); i++)
-    {
-        std::cout << i << ": " << tokensv[i] << std::endl;
-    }
-
-    return error::no_error;
-}
 error config_opt_libs(const cli_arguments &flags, const std::string &home_path,
                       std::string opt_libs)
 {
@@ -920,7 +945,7 @@ error config_opt_libs(const cli_arguments &flags, const std::string &home_path,
         }
         else
         {
-            log::println("Library %s already found in '%s'.", opt_libs, lib_config_file);
+            log::println("Library '%s' already found in '%s'.", opt_libs, lib_config_file);
         }
     }
     else
@@ -933,6 +958,142 @@ error config_opt_libs(const cli_arguments &flags, const std::string &home_path,
     }
     return error::no_error;
 } // config_opt_libs()
+
+error config_opt_ldirs(const cli_arguments &flags, const std::string &home_path,
+                       std::string opt_ldirs)
+{
+    std::string lib_config_file;
+
+    // Reading the project name and validating
+    if (flags.size() < 3)
+    {
+        log::println("Expecting project name");
+        print_help();
+        flags.print_help(4);
+        return error::invalid_argument;
+    }
+
+    auto [project_name, err0] = flags.at(2);
+    if (err0 != error::no_error)
+    {
+        log::println("Error while retrieving project name. Exiting...");
+        return error::invalid_argument;
+    }
+
+    // Check whether the project exist!
+    if (!fs::exists(home_path + project_name))
+    {
+        log::println("Error project '%s' not found. Exiting...", project_name);
+        return error::not_found;
+    }
+
+    log::println("opt_ldirs '%s'...", opt_ldirs);
+
+    lib_config_file = home_path + "/" + project_name + "/ltd-lib-config.txt";
+    // log::println("config: '%s'", lib_config_file);
+
+    if (fs::exists(lib_config_file) == true)
+    {
+        std::string str1;
+        std::string str2;
+        std::ifstream infile_lib;
+        char line[5004];
+        std::string ldirs_line = "";
+        std::string other_lines = "";
+        std::string word = "";
+        std::string word1 = "";
+        std::string word2 = "";
+        bool ldir_found = false;
+
+        // log::println("File %s exists.", lib_config_file);
+        infile_lib.open(lib_config_file);
+        while (!infile_lib.eof())
+        {
+            infile_lib.getline(line, 4096);
+            str1 = "";
+            str1.append(line);
+            str2 = trim(str1);
+            if (str2.length() == 0)
+            {
+                continue;
+            }
+            // std::cout << "line: " << line << std::endl;
+
+            // stringstream class check1
+            std::stringstream check1(line);
+
+            check1 >> word1;
+            if (word1.compare("LD_LDIRS") == 0)
+            {
+                check1 >> word2;
+                // std::cout << "word2: " << word2 << std::endl;
+                // std::string libs_line(line);
+                ldirs_line.append(line);
+                if (word2.compare("=") == 0)
+                {
+                    while (check1 >> word)
+                    {
+                        // std::cout << "word: " << word << std::endl;
+                        // std::cout << "opt_libs: " << opt_libs << std::endl;
+                        if (word.compare(opt_ldirs) == 0)
+                        {
+                            // std::cout << "opt_libs found." << std::endl;
+                            ldir_found = true;
+                            break;
+                        }
+                    }
+                }
+                if (ldir_found == false)
+                {
+                    ldirs_line = ldirs_line + " " + opt_ldirs;
+                    // std::cout << "1. libs_line: " << libs_line << std::endl;
+                }
+            }
+            else
+            {
+                other_lines.append(str2);
+                other_lines.append("\n");
+                // std::cout << "other_lines: " << other_lines << std::endl;
+            }
+        }
+
+        infile_lib.close();
+        if (ldir_found == false)
+        {
+            std::ofstream out(lib_config_file);
+            other_lines = trim(other_lines);
+            if (other_lines.length() > 0)
+            {
+                out << other_lines << std::endl;
+            }
+
+            // std::cout << "2. libs_line: " << libs_line << std::endl;
+            if (ldirs_line.length() != 0)
+            {
+                out << ldirs_line << std::endl;
+            }
+            else
+            {
+                out << "LD_LDIRS = " << opt_ldirs << std::endl;
+            }
+            out.close();
+            log::println("Library directory '%s' added to '%s'", opt_ldirs, lib_config_file);
+        }
+        else
+        {
+            log::println("Library directory '%s' already found in '%s'.", opt_ldirs, lib_config_file);
+        }
+    }
+    else
+    {
+        // std::cout << "File " << lib_config_file << " does NOT exist." << std::endl;
+        std::ofstream out(lib_config_file);
+        out << "LD_LDIRS = " << opt_ldirs << std::endl;
+        out.close();
+        log::println("Library directory '%s' added to '%s'", opt_ldirs, lib_config_file);
+    }
+    return error::no_error;
+} // config_opt_ldirs()
 
 auto main(int argc, char *argv[]) -> int
 {
@@ -1029,6 +1190,7 @@ auto main(int argc, char *argv[]) -> int
             else if (opt_ldirs.length() > 0)
             {
                 std::cout << "ldirs" << std::endl;
+                err = config_opt_ldirs(flags, home_path, opt_ldirs);
             }
 
             if (err != error::no_error)
