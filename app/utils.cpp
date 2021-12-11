@@ -47,7 +47,7 @@ void print_help()
     log::println("Available commands:");
     log::println("");
     log::println("    build         build a project");
-    log::println("    config        configure libraries for a project");
+    log::println("    config        configure libraries and files for a project");
     log::println("    run           run an executable in a project");
     log::println("    clean         clean a project");
     log::println("    test          run tests for a project");
