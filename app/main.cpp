@@ -1,9 +1,45 @@
+/**************************************************************************************
+ * Authors:
+ * 1. Benni Adham, benniadham@email.com
+ * 2. Husni Fahmi, husnifahmi@outlook.com
+ * Date: 2021-11-27
+ * Filename: main.cpp
+ * Description: ltd
+ * A suite of C++ build tool and library.
+ *
+ * {Ltd.}'s purpose is to provide environment to help writing safe
+ * and performant C++ code. It does so by providing:
+ * = build tools that reduces the complexity of various C/C++
+ *   build tools and toolchains;
+ * = library with a framework that encourages consistent and
+ *   good practices in writing safe and performant code.
+ *
+ **************************************************************************************/
+
+/**************************
+ * date: 2021-12-12
+ * ./ltd package <project_name>
+ *
+ * will copy includes to ltd_home/packages/project_name/inc
+ * will copy binaries exe dan .a ke folder ltd_home/packages/project_name/
+ *
+ * other projects will refer to these packages.
+ * ./ltd import project_a project_b
+ *
+ * ltd will add ltd_home/package/project_b/inc to include PATH
+ * ltd will add ltd_home/package/project_b to library PATH
+ *
+ *************************/
+
 #include <iostream>
 #include <string>
 #include <algorithm>
 
 #include <fstream>
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include <pwd.h>
 
@@ -1279,6 +1315,77 @@ error config_opt_files(const cli_arguments &flags, const std::string &home_path,
     return error::no_error;
 } // config_opt_files()
 
+error package_project(const cli_arguments &flags, const std::string &home_path)
+{
+    std::string lib_config_file;
+
+    // Reading the project name and validating
+    if (flags.size() < 3)
+    {
+        log::println("Expecting project name");
+        print_help();
+        flags.print_help(4);
+        return error::invalid_argument;
+    }
+
+    auto [project_name, err0] = flags.at(2);
+    if (err0 != error::no_error)
+    {
+        log::println("Error while retrieving project name. Exiting...");
+        return error::invalid_argument;
+    }
+
+    // Check whether the project exist!
+    if (!fs::exists(home_path + project_name))
+    {
+        log::println("Error project '%s' not found. Exiting...", project_name);
+        return error::not_found;
+    }
+
+    log::println("./ltd package %s...", project_name);
+
+    // lib_config_file = home_path + "/" + project_name + "/ltd-lib-config.txt";
+    // log::println("config: '%s'", lib_config_file);
+
+    std::string project_inc_path = home_path + "/" + project_name + "/inc";
+
+    if (std::experimental::filesystem::exists(project_inc_path) == false)
+    {
+        log::println("Error: project include directory %s does not exist.",
+                     project_inc_path);
+    }
+    else
+    {
+        std::string packages_inc_path = home_path + "/packages" + "/" +
+                                        project_name + "/inc";
+        std::experimental::filesystem::copy_options co =
+            std::experimental::filesystem::copy_options::overwrite_existing |
+            std::experimental::filesystem::copy_options::recursive;
+        if (std::experimental::filesystem::exists(packages_inc_path) == false)
+        {
+            if (std::experimental::filesystem::create_directories(packages_inc_path))
+            {
+                std::experimental::filesystem::copy(project_inc_path, packages_inc_path, co);
+                log::println("copied files from %s to %s",
+                             project_inc_path, packages_inc_path);
+            }
+            else
+            {
+                log::println("Error in creating directory %s.", packages_inc_path);
+            }
+        }
+        else
+        {
+            log::println("Directory %s already exists.", packages_inc_path);
+            std::experimental::filesystem::copy(project_inc_path, packages_inc_path, co);
+            log::println("copied files from %s to %s",
+                         project_inc_path, packages_inc_path);
+        }
+    }
+
+    return error::no_error;
+} // error package_project()
+
 auto main(int argc, char *argv[]) -> int
 {
 
@@ -1389,6 +1496,11 @@ auto main(int argc, char *argv[]) -> int
                 return -1;
             }
         } // 'config' command
+        else if (command == "package")
+        {
+            ltd::error err("");
+            err = package_project(flags, home_path);
+        }
         else if (command == "clean")
         {
             auto err = clean(flags, home_path);

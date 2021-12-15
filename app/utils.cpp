@@ -1,3 +1,36 @@
+/**************************************************************************************
+ * Authors:
+ * 1. Benni Adham, benniadham@email.com
+ * 2. Husni Fahmi, husnifahmi@outlook.com
+ * Date: 2021-11-27
+ * Filename: main.cpp
+ * Description: ltd
+ * A suite of C++ build tool and library.
+ *
+ * {Ltd.}'s purpose is to provide environment to help writing safe
+ * and performant C++ code. It does so by providing:
+ * = build tools that reduces the complexity of various C/C++
+ *   build tools and toolchains;
+ * = library with a framework that encourages consistent and
+ *   good practices in writing safe and performant code.
+ *
+ **************************************************************************************/
+
+/**************************
+ * date: 2021-12-12
+ * ./ltd package <project_name>
+ *
+ * will copy includes to ltd_home/packages/project_name/inc
+ * will copy binaries exe dan .a ke folder ltd_home/packages/project_name/
+ *
+ * other projects will refer to these packages.
+ * ./ltd import project_a project_b
+ *
+ * ltd will add ltd_home/package/project_b/inc to include PATH
+ * ltd will add ltd_home/package/project_b to library PATH
+ *
+ *************************/
+
 #include "utils.h"
 
 #include <ltd_cfg.h>
@@ -48,6 +81,7 @@ void print_help()
     log::println("");
     log::println("    build         build a project");
     log::println("    config        configure libraries and files for a project");
+    log::println("    package       package includes and libraries and files for a project");
     log::println("    run           run an executable in a project");
     log::println("    clean         clean a project");
     log::println("    test          run tests for a project");
