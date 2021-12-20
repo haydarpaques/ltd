@@ -82,6 +82,7 @@ void print_help()
     log::println("    build         build a project");
     log::println("    config        configure libraries and files for a project");
     log::println("    package       package includes and libraries and files for a project");
+    log::println("    import        <dest_project> <src_project> import includes and libraries packages/project");
     log::println("    run           run an executable in a project");
     log::println("    clean         clean a project");
     log::println("    test          run tests for a project");
