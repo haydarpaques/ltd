@@ -20,6 +20,8 @@ namespace ltd {}
 #include "cli_args.h"
 #include "errors.h"
 #include "log.h"
+#include "memory.h"
+#include "smart_ptr.h"
 #include "stdalias.h"
 #include "test_unit.h"
 
