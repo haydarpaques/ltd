@@ -47,7 +47,7 @@ namespace ltd
         }
 
         /**
-         * mem::block is used as the container for memory allocation and deallocation.
+         * memory::block is used as the container for memory allocation and deallocation.
          */ 
         struct block
         {
@@ -88,7 +88,11 @@ namespace ltd
             ret<bool,error> owns(block mem_block);
         };
 
-        template<typename T, typename A=memory::global_allocator, typename... P>
+        template<typename T, 
+                 typename A=typename std::conditional<is_defined<memory::global_allocator>, 
+                                                                 memory::global_allocator, 
+                                                                 memory::heap_allocator>::type, 
+                 typename... P>
         ret<T*,error> make(P&&... args)
         {
             using allocator_type = typename std::conditional<is_defined<A>, A, memory::heap_allocator>::type;

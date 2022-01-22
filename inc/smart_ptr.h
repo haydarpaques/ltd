@@ -40,10 +40,11 @@ namespace ltd
     {
         void operator ()(T *ptr, bool block_alloc)
         {
-            if (block_alloc)
+            if (block_alloc) {
                 memory::destruct(ptr);
-            else  
+            } else  {
                 delete ptr;
+            }
         }
     };
 
@@ -199,20 +200,9 @@ namespace ltd
         }
 
         /**
-         * @brief Test whether the pointer is a valid pointer.
-         * 
-         * @return true  If the pointer is valid.
-         * @return false If the pointer is invalid.
+         * @brief Clears and reset the pointer.
          */
-        inline bool is_valid() const
-        {
-            if (raw_ptr != nullptr && refcount != nullptr && is_valid_smart_ptr(refcount) == true)
-                return true;
-
-            return false;
-        }
-
-        ~pointer()
+        void clear()
         {
             if (raw_ptr != nullptr)
                 raw_ptr = nullptr;
@@ -223,6 +213,27 @@ namespace ltd
                     destroy_smart_ptr<T,D,A>(raw_ptr, refcount);
                 }
             }
+        }
+
+        /**
+         * @brief Test whether the pointer is a valid pointer.
+         * 
+         * @return true  If the pointer is valid.
+         * @return false If the pointer is invalid.
+         */
+        inline bool is_valid() const
+        {
+            if (raw_ptr != nullptr && refcount != nullptr && is_valid_smart_ptr(refcount) == true)
+                return true;
+
+            clear();
+            
+            return false;
+        }
+
+        ~pointer()
+        {
+            clear();
         }
 
         inline T* operator->() { return raw_ptr; }
