@@ -3,6 +3,7 @@
 
 #include <experimental/filesystem>
 #include <tuple>
+#include <typeinfo> 
 
 namespace ltd 
 {
@@ -17,6 +18,11 @@ namespace ltd
         return std::tuple<Args&...>(args...);
     }
 
+    template<typename T, typename = void>
+    constexpr bool is_defined = false;
+
+    template<typename T>
+    constexpr bool is_defined<T, decltype(typeid(T), void())> = true;
 } // namespace ltd
 
 #endif // _LTD_INCLUDE_STDALIAS_H_
