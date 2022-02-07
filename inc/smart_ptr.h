@@ -98,7 +98,12 @@ namespace ltd
      * @tparam D The type of the deleter.
      * @tparam A The type of the allocator.
      */
-    template<typename T, typename D, typename A>
+    template<typename T, 
+             typename D=default_dltr<T>, 
+             typename A=typename std::conditional<is_defined<memory::global_allocator>, 
+                                                              memory::global_allocator, 
+                                                              memory::heap_allocator>::type
+            >
     class pointer
     {
     private:
@@ -160,7 +165,7 @@ namespace ltd
          */
         pointer(const pointer& other) 
         {
-            if (other.is_valid())
+            if (other.raw_ptr != nullptr && other.refcount != nullptr)
             {
                 other.refcount->inc();
 
@@ -221,7 +226,7 @@ namespace ltd
          * @return true  If the pointer is valid.
          * @return false If the pointer is invalid.
          */
-        inline bool is_valid() const
+        inline bool is_valid()
         {
             if (raw_ptr != nullptr && refcount != nullptr && is_valid_smart_ptr(refcount) == true)
                 return true;
@@ -491,7 +496,7 @@ namespace ltd
         T *instance     = (T*)(rc+1);
 
         memory::construct(instance, std::forward<P>(args)...);
-        memory::construct(rc, 1);
+        memory::construct(rc, 3);
 
         object<T,D,A> obj(instance, rc);
         return obj;

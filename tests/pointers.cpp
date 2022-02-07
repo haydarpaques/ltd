@@ -70,15 +70,21 @@ auto main(int argc, char** argv) -> int
 
     tu.test([&tu] () -> void {
         {            
+            pointer<test_class> ptr1;
             auto obj1 = make_object<test_class>();
             tu.expect(counter == 1, "Step 1 counter = 1");   
             {
                 auto obj2 = make_object<test_class>();
                 tu.expect(counter == 2, "Step 2 counter = 2");   
+                auto [ptr1, err] = obj2.get_pointer();
+                tu.expect(ptr1.is_valid() == true, "Step 3 is not valid");   
             }
-            tu.expect(counter == 1, "Step 3 counter = 1");         
+            tu.expect(ptr1.is_valid() == false, "Step 4 is valid");   
+            tu.expect(counter == 1, "Step 5 counter = 1"); 
+            tu.expect(obj1.is_null() == false, "Step 6 is null");
+            tu.expect(obj1.is_valid() == true, "Step 7 is not valid");
         }
-        tu.expect(counter == 0, "Step 4 counter = 0");         
+        tu.expect(counter == 0, "Step 6 counter = 0");         
     });
 
     tu.test([&tu] () -> void {
@@ -91,7 +97,6 @@ auto main(int argc, char** argv) -> int
     });
 
     tu.test([&tu] () -> void {
-                
         {
             auto obj1 = make_object<test_class>();
             tu.expect(counter == 1, "Step 1 counter = 1");    
@@ -99,7 +104,6 @@ auto main(int argc, char** argv) -> int
         tu.expect(counter == 0, "Step 2 counter = 0");        
     });
     
-
     tu.run(argc, argv);
 
     return 0;

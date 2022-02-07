@@ -74,6 +74,11 @@ namespace ltd
             ret<bool,error> owns(block mem_block);
         };
 
+        /**
+         * @brief Allocates and deallocates memory from the heap using `malloc()`
+         * and `free()`.
+         * 
+         */
         class heap_allocator
         {
         public:
@@ -88,6 +93,16 @@ namespace ltd
             ret<bool,error> owns(block mem_block);
         };
 
+        /**
+         * @brief Instantiate a C++ object using ltd's allocator framework.
+         * 
+         * @tparam T The class to be instantiated
+         * @tparam A The allocator type. Define global_allocator to override the
+         *           default `heap_allocator`.
+         * @tparam P The variadic template for the constructor
+         * @param args 
+         * @return ret<T*,error> The raw pointer to T and an error status.
+         */
         template<typename T, 
                  typename A=typename std::conditional<is_defined<memory::global_allocator>, 
                                                                  memory::global_allocator, 
