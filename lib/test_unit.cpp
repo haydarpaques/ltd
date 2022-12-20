@@ -1,5 +1,5 @@
-#include "../inc/test_unit.h"
-#include "../inc/log.h"
+#include "test_unit.h"
+#include "log.h"
 
 namespace ltd
 {

@@ -1,5 +1,4 @@
-
-#include "../inc/memory.h"
+#include "memory.h"
 
 namespace ltd
 {

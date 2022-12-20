@@ -1,4 +1,4 @@
-#include "../inc/errors.h"
+#include "errors.h"
 
 namespace ltd
 {

@@ -2,8 +2,8 @@
 #include <cstring>
 #include <algorithm>
 
-#include "../inc/cli_args.h"
-#include "../inc/log.h"
+#include "cli_args.h"
+#include "log.h"
 
 namespace ltd
 {

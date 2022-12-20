@@ -1,4 +1,4 @@
-#include "../inc/ref_counter.h"
+#include "ref_counter.h"
 
 namespace ltd
 {

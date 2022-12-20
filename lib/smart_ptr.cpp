@@ -1,4 +1,4 @@
-#include "../inc/smart_ptr.h"
+#include "smart_ptr.h"
 
 namespace ltd
 {

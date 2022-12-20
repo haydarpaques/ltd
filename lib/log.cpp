@@ -1,4 +1,4 @@
-#include "../inc/log.h"
+#include "log.h"
 
 namespace ltd 
 {
