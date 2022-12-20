@@ -39,3 +39,6 @@ CMakeFiles/*
 
 # IDE-specific configurations
 .vscode
+
+# Local storage
+.local
