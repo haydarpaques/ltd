@@ -12,16 +12,16 @@
 namespace ltd
 {
      /**
-     * @brief 
+     * @brief
      * Provides helper functions for handling with command-line arguments.
      * 
      * @details
      * Class cli_arguments implements command line arguments helper tools.
      * 
-     * This class provides command line arguments parser and simple help system. 
+     * This class provides command line arguments parser and simple help system.
      * To use this class, initialize it with `argc` and `argv` taken from `main()`.
      * 
-     * Bind local variable with an option by defining short option ('-'), the 
+     * Bind local variable with an option by defining short option ('-'), the
      * corresponding long option ('--') and description for help text.
      * 
      * ```C++
@@ -30,11 +30,11 @@ namespace ltd
      *              cli_arguments args;
      *              int debug     = 0;
      *              int verbosity = 0;
-     *  
+     * 
      *              args.bind(&debug, 'g', "debug", "Build with debug information.");
      *              args.bind(&verbosity, 'v', "verbose", "Verbose logging.");
      *              args.parse(argc, argv);
-     *           
+     * 
      *              if (arguments.size() < 2)
      *              {
      *                  print_help();
@@ -45,19 +45,18 @@ namespace ltd
      *              return 0;
      *          }
      * ```
-     */ 
+     */
     class cli_arguments
     {
-    private:                
-
+    private:
         struct option
-        {   
+        {
             using value_t = std::variant<int*, std::string*, std::vector<const char*>*>;
 
             std::string long_opt;
             std::string help;
             char        short_opt;
-            value_t     value;            
+            value_t     value;
         };
 
         struct argument
@@ -77,55 +76,55 @@ namespace ltd
     private:
         ret<int, error> get_argument(char short_opt);
         ret<int, error> add_argument(char short_opt);
-        
+
         error parse_argv();
         error bind_values();
 
     public:
         /**
-         * @brief 
+         * @brief
          * Construct a new cli args object
          */
         cli_arguments();
 
         /**
-         * @brief 
+         * @brief
          * Binds a string to an option.
          * 
          * @details
-         * Call this function to bind a string variable to an argument. If 
-         * the argument is provided in the cli command the variable will be 
-         * assigned with that value. If the option is not provided, then a 
+         * Call this function to bind a string variable to an argument. If
+         * the argument is provided in the cli command the variable will be
+         * assigned with that value. If the option is not provided, then a
          * default value will be assigned to the variable.
-         */ 
+         */
         error bind(int* value, char short_opt, const std::string& long_opt, const std::string& help);
 
         /**
-         * @brief 
+         * @brief
          * Binds a string to an option.
          * 
          * @details
-         * Call this function to bind a string variable to an argument. If 
-         * the argument is provided in the cli command the variable will be 
-         * assigned with that value. If the option is not provided, then a 
+         * Call this function to bind a string variable to an argument. If
+         * the argument is provided in the cli command the variable will be
+         * assigned with that value. If the option is not provided, then a
          * default value will be assigned to the variable.
-         */ 
+         */
         error bind(std::string* value, char short_opt, const std::string& long_opt, const std::string& help);
 
         /**
-         * @brief 
+         * @brief
          * Binds a string to an option.
          * 
          * @details
-         * Call this function to bind a string variable to an argument. If 
-         * the argument is provided in the cli command the variable will be 
-         * assigned with that value. If the option is not provided, then a 
+         * Call this function to bind a string variable to an argument. If
+         * the argument is provided in the cli command the variable will be
+         * assigned with that value. If the option is not provided, then a
          * default value will be assigned to the variable.
-         */ 
+         */
         error bind(std::vector<const char*>* value, char short_opt, const std::string& long_opt, const std::string& help);
 
         /**
-         * @brief 
+         * @brief
          * Iterates all registered options
          * 
          * @param func Iterator callback
@@ -133,53 +132,53 @@ namespace ltd
         void  iterate_options(void (func)(std::variant<int*, std::string*, std::vector<const char*>*>, char, const std::string&, const std::string&));
 
         /**
-         * @brief 
+         * @brief
          * Get the short opt object from a long option
          * 
          * @param long_opt  The long option
-         * @return ret<char, error> 
+         * @return ret<char, error>
          */
         ret<char, error> get_short_opt(const std::string& long_opt) const;
 
         /**
-         * @brief 
+         * @brief
          * Get the long opt object from short option
          * 
-         * @param short_opt     The short option
-         * @return ret<const std::string&, error> 
+         * @param short_opt The short option
+         * @return ret<const std::string&, error>
          */
         ret<const std::string&, error> get_long_opt(char short_opt) const;
 
         /**
-         * @brief 
+         * @brief
          * Get the index object by short option
          * 
-         * @param short_opt     The short option
-         * @return ret<int, error> 
+         * @param short_opt The short option
+         * @return ret<int, error>
          */
         ret<int, error> get_index(char short_opt) const;
 
         /**
-         * @brief 
+         * @brief
          * Retrieve argv value in the given index
          * 
          * @param index     The index of argv to retrieve
-         * @return ret<const char*, error> 
+         * @return ret<const char*, error>
          */
         ret<const char*, error> at(size_t index) const;
 
         /**
-         * @brief 
+         * @brief
          * Parse argc and argv for bindings
          * 
-         * @param argc 
-         * @param argv 
-         * @return error 
+         * @param argc
+         * @param argv
+         * @return error
          */
         error parse(int argc, char** argv);
 
         /**
-         * @brief 
+         * @brief
          * Get the `argc` value.
          * 
          * @return size_t The value of argc.
@@ -187,7 +186,7 @@ namespace ltd
         size_t size() const;
 
         /**
-         * @brief 
+         * @brief
          * Prints options switches to terminal.
          * 
          * @details

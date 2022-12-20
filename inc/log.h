@@ -9,8 +9,9 @@
 namespace ltd
 {
     /**
-     * @brief Namespace log provides logging and formatting functionalities similar to stdio functions in c.
-     */ 
+     * @brief
+     * Namespace log provides logging and formatting functionalities similar to stdio functions in C.
+     */
     namespace log
     {
         enum class print_state {
@@ -18,9 +19,9 @@ namespace ltd
         };
 
         /**
-         * @brief 
+         * @brief
          * struct printf_formatter provides internal mechanism in handling printf verbs.
-         */ 
+         */
         struct printf_formatter {
             bool pound_flag = false;
             bool expect_width = false;
@@ -37,17 +38,17 @@ namespace ltd
         };
 
         /**
-         * @brief 
+         * @brief
          * Default function for osprintf.
-         */ 
+         */
         inline void osprintf(print_state state, std::ostream& out, const char* format) {
             out << format;
         }
 
         /**
-         * @brief 
+         * @brief
          * Function template for handling printf like functionality.
-         */  
+         */
         template<typename T, typename... Args>
         void osprintf(print_state state, std::ostream& out, const char* format, T value, Args ...args)
         {
@@ -57,10 +58,8 @@ namespace ltd
             case print_state::Prepared:
                 break;
             case print_state::Next:
-                while (*format != 0) 
-                {
-                    if (*format == '%') 
-                    {
+                while (*format != 0) {
+                    if (*format == '%') {
                         format++;
 
                         // Reset formatting
@@ -71,52 +70,53 @@ namespace ltd
                         printf_formatter formatter;
 
                         // Adjusment flag
-                        if ((format = formatter.read_adjustment_flag(out, format)) == nullptr) return;
+                        if ((format = formatter.read_adjustment_flag(out, format)) == nullptr)
+                            return;
 
                         // Sign flag
-                        if ((format = formatter.read_sign_flag(out, format)) == nullptr) return;
+                        if ((format = formatter.read_sign_flag(out, format)) == nullptr)
+                            return;
 
                         // TODO: There is no implementation for print space
                         // if there's no sign printed.
 
                         // Pound flag
-                        if ((format = formatter.read_pound_flag(out, format)) == nullptr) return;
+                        if ((format = formatter.read_pound_flag(out, format)) == nullptr)
+                            return;
 
                         // Fill with 0's flag
-                        if ((format = formatter.read_fill_flag(out, format)) == nullptr) return;
+                        if ((format = formatter.read_fill_flag(out, format)) == nullptr)
+                            return;
 
                         // Set print width
-                        if ((format = formatter.read_width(out, format)) == nullptr) return;
+                        if ((format = formatter.read_width(out, format)) == nullptr)
+                            return;
 
                         // Set precision
-                        if ((format = formatter.read_precision(out, format)) == nullptr) return;
+                        if ((format = formatter.read_precision(out, format)) == nullptr)
+                            return;
 
                         // Length is ignored
-                        if ((format = formatter.read_length(out, format)) == nullptr) return;
+                        if ((format = formatter.read_length(out, format)) == nullptr)
+                            return;
 
                         // Specifier
-                        if ((format = formatter.read_specifier(out, format)) == nullptr) return;
+                        if ((format = formatter.read_specifier(out, format)) == nullptr)
+                            return;
 
-                        if (formatter.expect_width) 
-                        {
-                            if (formatter.expect_precision) 
-                            {
+                        if (formatter.expect_width) {
+                            if (formatter.expect_precision)
                                 return osprintf(print_state::Precision, out, format, args...);
-                            }
-                            else 
-                            {
+                            else
                                 return osprintf(print_state::Prepared, out, format, args...);
-                            }
-                        }
-                        else if (formatter.expect_precision) 
-                        {
+                        } else if (formatter.expect_precision) {
                             return osprintf(print_state::Prepared, out, format, args...);
                         }
+
                         out << value;
+
                         return osprintf(print_state::Next, out, format, args...);
-                    }
-                    else 
-                    {
+                    } else {
                         out << *format++;
                     }
                 }
@@ -126,19 +126,19 @@ namespace ltd
         }
 
         /**
-         * @brief 
+         * @brief
          * Function template for printf.
-         */ 
+         */
         template<typename... Args>
-        void printf(const char* format, Args... args) 
+        void printf(const char* format, Args... args)
         {
             osprintf(print_state::Next, std::cout, format, args...);
         }
 
         /**
-         * @brief 
+         * @brief
          * Function template for printf with carriage return.
-         */ 
+         */
         template<typename... Args>
         void println(const char* format, Args... args)
         {
@@ -147,27 +147,29 @@ namespace ltd
         }
 
         /**
-         * @brief 
+         * @brief
          * Function template for sprintf.
-         */ 
+         */
         template<typename... Args>
         std::string sprintf(const char* format, Args... args)
         {
             std::ostringstream sstream;
-            osprintf(print_state::Next, sstream, format, args...); 
+            osprintf(print_state::Next, sstream, format, args...);
+
             return sstream.str();
         }
 
         /**
-         * @brief 
+         * @brief
          * Function template for printing to string with carriage return.
-         */ 
+         */
         template<typename... Args>
         std::string sprintln(const char* format, Args... args)
         {
             std::ostringstream sstream;
             osprintf(print_state::Next, sstream, format, args...);
             sstream << std::endl;
+
             return sstream.str();
         }
     } // namespace log

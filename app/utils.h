@@ -5,7 +5,7 @@
 using namespace ltd;
 
 /**
- * @brief 
+ * @brief
  * Checks a version of a tool used with ltd
  * 
  * @param name      The name of the tool
@@ -17,13 +17,13 @@ using namespace ltd;
 error check_version(const char *name, const char *desc, const char *cmd, const char *rex);
 
 /**
- * @brief 
+ * @brief
  * Prints help to the terminal
  */
 void print_help();
 
 /**
- * @brief 
+ * @brief
  * Prints ltd version to the terminal
  */
 void print_version();

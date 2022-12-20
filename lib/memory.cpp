@@ -48,13 +48,13 @@ namespace ltd
 
         ret<block,error> heap_allocator::allocate_all()
         {
-            block blk{nullptr, 0};                
+            block blk{nullptr, 0};
             return {blk, error::allocation_failure};
         }
 
         error heap_allocator::deallocate(block allocated_block)
         {
-            if(allocated_block.ptr==nullptr)
+            if (allocated_block.ptr==nullptr)
                 return error::null_pointer;
 
             free(allocated_block.ptr);
