@@ -22,7 +22,7 @@ file(GLOB TESTSOURCES ${TSTDIR}/*.cpp)
 
 # create liblltd.a static library
 add_library(lltd STATIC ${LIBSOURCES})
-target_include_directories( lltd PUBLIC ${INCDIR})
+target_include_directories(lltd PUBLIC ${INCDIR})
 
 # create the executable binary
 add_executable(ltd ${SOURCES})
@@ -47,3 +47,9 @@ foreach(TESTSOURCE ${TESTSOURCES})
         set_property(TEST test-${EXECNAME}-${I} PROPERTY PASS_REGULAR_EXPRESSION "-ok-")
     endforeach()
 endforeach(TESTSOURCE ${TESTSOURCES})
+
+# install the executable binary
+install(TARGETS ltd DESTINATION bin)
+
+# install headers
+install(DIRECTORY ${INCDIR}/ DESTINATION include/ltd)
