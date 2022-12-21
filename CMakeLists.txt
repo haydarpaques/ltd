@@ -3,39 +3,29 @@ cmake_minimum_required(VERSION 3.10)
 # set the project name
 project(ltd VERSION 0.2)
 
-# specify the C++ standard and comilation flags
+# specify the C++ standard and compilation flags
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(GCC_COVERAGE_COMPILE_FLAGS "-Wall -Wextra -pedantic")
 
-add_library(
-    lltd
-    lib/cli_args.cpp
-    lib/errors.cpp
-    lib/log.cpp
-    lib/memory.cpp
-    lib/smart_ptr.cpp
-    lib/ref_counter.cpp
-    lib/test_unit.cpp
-)
+# set path variables
+set(ROODIR ${PROJECT_SOURCE_DIR})
+set(INCDIR ${PROJECT_SOURCE_DIR}/inc)
+set(LIBDIR ${PROJECT_SOURCE_DIR}/lib)
+set(APPDIR ${PROJECT_SOURCE_DIR}/app)
+set(TSTDIR ${PROJECT_SOURCE_DIR}/tests)
 
-target_include_directories(
-    lltd
-    PUBLIC
-    "${PROJECT_SOURCE_DIR}/inc/"
-)
+# source files to create liblltd.a static library
+file(GLOB LIBSOURCES ${LIBDIR}/*.cpp)
 
-add_executable(
-    ltd
-    app/main.cpp
-    app/project.cpp
-    app/utils.cpp
-)
+# source files to create the executable binary
+file(GLOB SOURCES ${APPDIR}/*.cpp)
 
-target_include_directories(
-    ltd
-    PUBLIC
-    "${PROJECT_SOURCE_DIR}"
-)
+# create liblltd.a static library
+add_library(lltd STATIC ${LIBSOURCES})
+target_include_directories( lltd PUBLIC ${INCDIR})
 
+# create the executable binary
+add_executable(ltd ${SOURCES})
+target_include_directories(ltd PUBLIC ${ROODIR})
 target_link_libraries(ltd lltd stdc++fs)
