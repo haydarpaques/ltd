@@ -8,7 +8,8 @@
 namespace ltd
 {
     /**
-     * @brieftest_unit provides unit testing framework
+     * @brief
+     * test_unit provides unit testing framework
      * 
      * @details
      * The ltd framework collaborate features on CMake test and its own framework.
