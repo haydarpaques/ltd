@@ -15,11 +15,10 @@ set(LIBDIR ${PROJECT_SOURCE_DIR}/lib)
 set(APPDIR ${PROJECT_SOURCE_DIR}/app)
 set(TSTDIR ${PROJECT_SOURCE_DIR}/tests)
 
-# source files to create liblltd.a static library
+# add source files
 file(GLOB LIBSOURCES ${LIBDIR}/*.cpp)
-
-# source files to create the executable binary
 file(GLOB SOURCES ${APPDIR}/*.cpp)
+file(GLOB TESTSOURCES ${TSTDIR}/*.cpp)
 
 # create liblltd.a static library
 add_library(lltd STATIC ${LIBSOURCES})
@@ -29,3 +28,11 @@ target_include_directories( lltd PUBLIC ${INCDIR})
 add_executable(ltd ${SOURCES})
 target_include_directories(ltd PUBLIC ${ROODIR})
 target_link_libraries(ltd lltd stdc++fs)
+
+# create test executable binaries
+foreach(TESTSOURCE ${TESTSOURCES})
+    string(REPLACE ".cpp" "" EXECPATH ${TESTSOURCE})
+    file(RELATIVE_PATH EXECNAME ${TSTDIR} ${EXECPATH})
+    add_executable(${EXECNAME} ${TESTSOURCE})
+    target_link_libraries(${EXECNAME} lltd stdc++fs)
+endforeach(TESTSOURCE ${TESTSOURCES})
