@@ -36,3 +36,9 @@ Makefile
 CMakeCache.txt
 cmake_install.cmake
 CMakeFiles/*
+
+# IDE-specific configurations
+.vscode
+
+# Local storage
+.local

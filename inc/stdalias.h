@@ -3,17 +3,17 @@
 
 #include <experimental/filesystem>
 #include <tuple>
-#include <typeinfo> 
+#include <typeinfo>
 
-namespace ltd 
+namespace ltd
 {
     namespace fs = std::experimental::filesystem;
 
-    template<typename... Args>  
+    template<typename... Args>
     using ret = std::tuple<Args...>;
 
-    template<typename... Args>  
-    auto catch_ret(Args&... args) 
+    template<typename... Args>
+    auto catch_ret(Args&... args)
     {
         return std::tuple<Args&...>(args...);
     }

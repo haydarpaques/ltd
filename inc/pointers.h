@@ -10,22 +10,22 @@
 namespace ltd
 {
     /**
-     * Template class pointer provides scoped pointer container. 
+     * Template class pointer provides scoped pointer container.
      * 
      * Use this pointer container to handle non-shared raw pointers to objects.
      * Once this container leaves its scope it will delete the pointer. Unless
      * the content of this container is moved to another container using
      * std::move().
      * 
-     * ```C++     
+     * ```C++
      *      ptr<Class> new_container(std::move(old_container));
      * ```
-     */ 
+     */
     template<typename T>
     class ptr
     {
         T *raw;
-        
+
     public:
         ptr() : raw(0) {}
 
@@ -64,21 +64,21 @@ namespace ltd
     /**
      * @brief reference counter
      * 
-     * @tparam T 
+     * @tparam T
      */
     /*
     template<typename T>
     class ref_counter
     {
         T *raw_ptr;
-        std::atomic<int> counter;        
+        std::atomic<int> counter;
         std::function<void(T*)> deleter;
 
-    public:        
-        ref_counter(T *ptr, std::function<void(T*)> delete_func=nullptr) : 
+    public:
+        ref_counter(T *ptr, std::function<void(T*)> delete_func=nullptr) :
                     raw_ptr(ptr), deleter(delete_func), counter(1) {}
 
-        ref_counter() = delete;        
+        ref_counter() = delete;
         ref_counter(ref_counter& other) = delete;
         ref_counter(const ref_counter& other) = delete;
         ref_counter& operator=(ref_counter other) = delete;
@@ -93,7 +93,7 @@ namespace ltd
             auto [rc, err] = memory::make<ref_counter, A>();
             if (err != error::no_error)
                 return {nullptr, err};
-            
+
             return {rc, error::no_error};
         }
 
@@ -108,22 +108,22 @@ namespace ltd
         }
     };
     */
-   
+
     /**
-     * @brief 
+     * @brief
      * 
      * @tparam T The class pointer type
-     * @tparam A The allocator type 
+     * @tparam A The allocator type
      */
     template<typename T, typename A>
     class object
     {
         ref_counted_ptr<T,A> *ptr;
 
-    public: 
-        object() : raw_ptr(0) {}        
+    public:
+        object() : raw_ptr(0) {}
 
-        object(T *ptr, std::function<void()> delete_function) 
+        object(T *ptr, std::function<void()> delete_function)
                 : raw_ptr(ptr), deleter(delete_function) { }
 
         object(object&& other)
@@ -160,7 +160,7 @@ namespace ltd
         // Allocate 2 objects at once. T and reference counter
         auto [mem_block, err] = allocator.allocate(sizeof(T)+sizeof(ref_counter<T>));
 
-        if(err != error::no_error)
+        if (err != error::no_error)
             return object<T>(nullptr);
 
         T *instance = mem_block.ptr;

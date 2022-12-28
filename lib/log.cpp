@@ -1,8 +1,8 @@
-#include "../inc/log.h"
+#include "log.h"
 
-namespace ltd 
+namespace ltd
 {
-    namespace log 
+    namespace log
     {
 
         const char* printf_formatter::read_adjustment_flag(std::ostream& out, const char* format)
@@ -10,13 +10,12 @@ namespace ltd
             if (*format == 0)
                 return nullptr;
 
-            if (*format == '-') 
-            {
+            if (*format == '-') {
                 format++;
                 out.setf(std::ios::left);
-            }
-            else
+            } else {
                 out.setf(std::ios::right);
+            }
 
             return format;
         }
@@ -26,13 +25,12 @@ namespace ltd
             if (*format == 0)
                 return nullptr;
 
-            if (*format == '+')
-            {
+            if (*format == '+') {
                 format++;
                 out.setf(std::ios::showpos);
-            }
-            else
+            } else {
                 out.unsetf(std::ios::showpos);
+            }
 
             return format;
         }
@@ -42,8 +40,7 @@ namespace ltd
             if (*format == 0)
                 return nullptr;
 
-            if (*format == '#') 
-            {
+            if (*format == '#') {
                 format++;
                 pound_flag = true;
             }
@@ -56,12 +53,11 @@ namespace ltd
             if (*format == 0)
                 return nullptr;
 
-            if (*format == '0')
-            {
+            if (*format == '0') {
                 format++;
                 out.fill('0');
             }
-                
+
             return format;
         }
 
@@ -70,15 +66,13 @@ namespace ltd
             if (*format == 0)
                 return nullptr;
 
-            if (*format == '*') 
+            if (*format == '*') {
                 expect_width = true;
-            else if (std::isdigit(*format)) 
-            {
+            } else if (std::isdigit(*format)) {
                 char buff[50];
                 int  at = 0;
 
-                do 
-                {
+                do {
                     buff[at++] = *format++;
                 } while (std::isdigit(*format));
 
@@ -97,14 +91,12 @@ namespace ltd
             if (*format == '.') {
                 if (*++format == '*') {
                     expect_width = true;
-                }
-                else {
+                } else {
                     char buff[50];
                     int  at = 0;
 
-                    while (std::isdigit(*format)) {
+                    while (std::isdigit(*format))
                         buff[at++] = *format++;
-                    }
 
                     buff[at] = 0;
 
@@ -136,6 +128,7 @@ namespace ltd
             default:
                 return format;
             }
+
             return format;
         }
 
@@ -190,6 +183,7 @@ namespace ltd
             default:
                 return nullptr;
             }
+
             return format;
         }
     } // namespace log

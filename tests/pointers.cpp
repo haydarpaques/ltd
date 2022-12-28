@@ -1,7 +1,5 @@
 #include <iostream>
-
 #include <string.h>
-
 #include <ltd.h>
 
 using namespace ltd;

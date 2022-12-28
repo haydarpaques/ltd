@@ -10,12 +10,13 @@
 namespace ltd
 {
     /**
-     * @brief Holds classes and functions
+     * @brief
+     * Holds classes and functions
      * 
      * This namespace provides functionalities for memory allocators. The framework
      * partially inspired by Andrei Alexandrescu talks regarding composibles allocators.
      * 
-     * The default allocator is assigned to heap_allocator. To override this, 
+     * The default allocator is assigned to heap_allocator. To override this,
      * one should declare and implement class global_allocator.
      * 
      * To have a desired bespoke behaviour of an allocator, one can compose two or
@@ -23,13 +24,13 @@ namespace ltd
      * use it in a specific class, pass it as a template parameter.
      * 
      * The library uses this framework for ```object::make()``` and internal allocation
-     * procedures of containers. 
+     * procedures of containers.
      */
     namespace memory
     {
         /**
          * Construct object of type T on the given memory address.
-         */ 
+         */
         template<typename T, typename... Args>
         void construct(T *instance, Args&&... args)
         {
@@ -37,9 +38,9 @@ namespace ltd
         }
 
         /**
-         * Destruct the object by calling its destructor. 
+         * Destruct the object by calling its destructor.
          * This does not release the memory.
-         */ 
+         */
         template<typename T>
         void destruct(T *instance)
         {
@@ -48,7 +49,7 @@ namespace ltd
 
         /**
          * memory::block is used as the container for memory allocation and deallocation.
-         */ 
+         */
         struct block
         {
             void*  ptr;
@@ -75,9 +76,9 @@ namespace ltd
         };
 
         /**
-         * @brief Allocates and deallocates memory from the heap using `malloc()`
+         * @brief
+         * Allocates and deallocates memory from the heap using `malloc()`
          * and `free()`.
-         * 
          */
         class heap_allocator
         {
@@ -94,19 +95,20 @@ namespace ltd
         };
 
         /**
-         * @brief Instantiate a C++ object using ltd's allocator framework.
+         * @brief
+         * Instantiate a C++ object using ltd's allocator framework.
          * 
          * @tparam T The class to be instantiated
          * @tparam A The allocator type. Define global_allocator to override the
          *           default `heap_allocator`.
          * @tparam P The variadic template for the constructor
-         * @param args 
+         * @param args
          * @return ret<T*,error> The raw pointer to T and an error status.
          */
-        template<typename T, 
-                 typename A=typename std::conditional<is_defined<memory::global_allocator>, 
-                                                                 memory::global_allocator, 
-                                                                 memory::heap_allocator>::type, 
+        template<typename T,
+                 typename A=typename std::conditional<is_defined<memory::global_allocator>,
+                                                                 memory::global_allocator,
+                                                                 memory::heap_allocator>::type,
                  typename... P>
         ret<T*,error> make(P&&... args)
         {
@@ -114,13 +116,13 @@ namespace ltd
 
             allocator_type allocator;
             auto [b,e] = allocator.allocate(sizeof(T));
-            
-            if(e != error::no_error)
+
+            if (e != error::no_error)
                 return {nullptr, e};
 
             T *ptr = (T*)b.ptr;
             construct(ptr, std::forward<P>(args)...);
-            
+
             return {ptr, error::no_error};
         }
     }
